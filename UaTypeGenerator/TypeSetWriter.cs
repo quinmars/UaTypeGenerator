@@ -63,6 +63,7 @@ namespace UaTypeGenerator
         {
             bool isDerived = false;
 
+            WriteDocumentation(writer, c);
             WriteAttributes(writer, c);
 
             if (c.ParentDataTypeId != null)
@@ -97,6 +98,7 @@ namespace UaTypeGenerator
             if (c.Properties.Any() || !isDerived)
             {
                 writer.WriteLine();
+                WriteInheritDoc(writer);
                 writer.WriteLine($"public {modifier} void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)");
                 writer.WriteLine("{");
                 writer.Indent++;
@@ -118,6 +120,7 @@ namespace UaTypeGenerator
                 writer.WriteLine("}");
 
                 writer.WriteLine();
+                WriteInheritDoc(writer);
                 writer.WriteLine($"public {modifier} void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)");
                 writer.WriteLine("{");
                 writer.Indent++;
@@ -141,9 +144,10 @@ namespace UaTypeGenerator
             writer.Indent--;
             writer.WriteLine("}");
         }
-        
+
         private void WriteUnion(IndentedTextWriter writer, ClassDefinition c)
         {
+            WriteDocumentation(writer, c);
             WriteAttributes(writer, c);
 
             writer.WriteLine($"public sealed class {c.SymbolicName} : Workstation.ServiceModel.Ua.Union");
@@ -195,6 +199,7 @@ namespace UaTypeGenerator
             }
 
             writer.WriteLine();
+            WriteInheritDoc(writer);
             writer.WriteLine($"public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)");
             writer.WriteLine("{");
             writer.Indent++;
@@ -233,6 +238,7 @@ namespace UaTypeGenerator
             writer.WriteLine("}");
 
             writer.WriteLine();
+            WriteInheritDoc(writer);
             writer.WriteLine($"public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)");
             writer.WriteLine("{");
             writer.Indent++;
@@ -272,6 +278,41 @@ namespace UaTypeGenerator
             writer.WriteLine("}");
             writer.Indent--;
             writer.WriteLine("}");
+        }
+
+        private void WriteDocumentation(IndentedTextWriter writer, ClassDefinition c)
+        {
+            string summary = c.Description is null
+                ? $"Class for {c.SymbolicName}"
+                : c.Description;
+            writer.WriteLine("/// <summary>");
+            writer.WriteLine($"/// {summary}");
+            writer.WriteLine("/// </summary>");
+
+            if (!string.IsNullOrEmpty(c.Documentation))
+            {
+                writer.WriteLine($"/// <seealso href=\"{c.Documentation}\" />");
+            }
+        }
+        
+        private void WriteDocumentation(IndentedTextWriter writer, EnumDefinition e)
+        {
+            string summary = e.Description is null
+                ? $"{e.SymbolicName} enumeration"
+                : e.Description;
+            writer.WriteLine("/// <summary>");
+            writer.WriteLine($"/// {summary}");
+            writer.WriteLine("/// </summary>");
+
+            if (!string.IsNullOrEmpty(e.Documentation))
+            {
+                writer.WriteLine($"/// <seealso href=\"{e.Documentation}\" />");
+            }
+        }
+
+        private void WriteInheritDoc(IndentedTextWriter writer)
+        {
+            writer.WriteLine("/// <<inheritdoc/>");
         }
 
         private void WriteAttributes(IndentedTextWriter writer, ClassDefinition c)
@@ -375,6 +416,8 @@ namespace UaTypeGenerator
 
         private void WriteEnumeration(IndentedTextWriter writer, EnumDefinition e)
         {
+            WriteDocumentation(writer, e);
+
             if (_typeSet.TryGetExpandedNodeId(e.DataTypeId, out var eId))
             {
                 writer.WriteLine($"[Workstation.ServiceModel.Ua.DataTypeId(\"{eId}\")]");
@@ -390,6 +433,10 @@ namespace UaTypeGenerator
 
             foreach (var item in e.Items)
             {
+                if (item.Description != null)
+                {
+                    writer.WriteLine($"/// <summary>{item.Description}</summary>");
+                }
                 writer.WriteLine($"{item.SymbolicName} = {item.Value},");
             }
 

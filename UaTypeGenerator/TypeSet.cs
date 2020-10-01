@@ -133,12 +133,14 @@ namespace UaTypeGenerator
                         return (BaseDefinition)new EnumDefinition
                         {
                             SymbolicName = dt.GetTypeName(),
-                            Comment = dt.Documentation,
+                            Description = dt.Description?.FirstOrDefault()?.Value,
+                            Documentation = dt.Documentation,
                             DataTypeId = ParseNodeId(dt.NodeId),
                             Items = dt.Definition.Field
                                 .Select(f => new EnumDefinition.Item
                                 {
                                     SymbolicName = f.SymbolicName ?? f.Name,
+                                    Description = f.Description?.FirstOrDefault()?.Value,
                                     Value = f.Value
                                 })
                                 .ToArray()
@@ -153,7 +155,8 @@ namespace UaTypeGenerator
                             XmlEncodingId = xmlId,
                             DataTypeId = dataTypeId,
                             SymbolicName = dt.GetTypeName(),
-                            Comment = dt.Documentation,
+                            Description = dt.Description?.FirstOrDefault()?.Value,
+                            Documentation = dt.Documentation,
                             ParentDataTypeId = parentId,
                             IsAbstract = dt.IsAbstract,
                             IsUnion = parentId == UnionId,
@@ -163,6 +166,7 @@ namespace UaTypeGenerator
                                 {
                                     DataTypeId = ParseNodeId(f.DataType),
                                     SymbolicName = f.SymbolicName ?? f.Name,
+                                    Description = f.Description?.FirstOrDefault()?.Value,
                                     IsOptional = f.IsOptional,
                                     Rank = f.ValueRank
                                 })

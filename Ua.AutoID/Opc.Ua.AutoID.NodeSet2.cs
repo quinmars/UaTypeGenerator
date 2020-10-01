@@ -1,32 +1,62 @@
 namespace Ua.AutoID
 {
+    /// <summary>
+    /// AutoIdOperationStatusEnumeration enumeration
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.2.1" />
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3013")]
     public enum AutoIdOperationStatusEnumeration
     {
+        /// <summary>Successful operation</summary>
         SUCCESS = 0,
+        /// <summary>The operation has not be executed in total.</summary>
         MISC_ERROR_TOTAL = 1,
+        /// <summary>The operation has been executed only partial.</summary>
         MISC_ERROR_PARTIAL = 2,
+        /// <summary>Password required</summary>
         PERMISSON_ERROR = 3,
+        /// <summary>Password is wrong.</summary>
         PASSWORD_ERROR = 4,
+        /// <summary>Memory region not available for the actual tag.</summary>
         REGION_NOT_FOUND_ERROR = 5,
+        /// <summary>Operation not supported by the actual tag.</summary>
         OP_NOT_POSSIBLE_ERROR = 6,
+        /// <summary>Addressed memory not available for the actual tag.</summary>
         OUT_OF_RANGE_ERROR = 7,
+        /// <summary>The operation cannot be executed because no tag or code was inside the range of the AutoID Device or the tag or code has been moved out of the range during execution.</summary>
         NO_IDENTIFIER = 8,
+        /// <summary>Multiple tags or codes have been selected, but the command can only be used with a single tag or code.</summary>
         MULTIPLE_IDENTIFIERS = 9,
+        /// <summary>The tag or code exists and has a valid format, but there was a problem reading the data (e.g. still CRC error after maximum number of retries).</summary>
         READ_ERROR = 10,
+        /// <summary>The (optical) code or plain text has too many failures and cannot be detected.</summary>
         DECODING_ERROR = 11,
+        /// <summary>The code doesn’t match the given target value.</summary>
         MATCH_ERROR = 12,
+        /// <summary>The code format is not supported by the AutoID Device.</summary>
         CODE_NOT_SUPPORTED = 13,
+        /// <summary>The tag exists, but there was a problem writing the data.</summary>
         WRITE_ERROR = 14,
+        /// <summary>The command or a parameter combination is not supported by the AutoID Device.</summary>
         NOT_SUPPORTED_BY_DEVICE = 15,
+        /// <summary>The command or a parameter combination is not supported by the tag.</summary>
         NOT_SUPPORTED_BY_TAG = 16,
+        /// <summary>The AutoID Device is in a state not ready to execute the command.</summary>
         DEVICE_NOT_READY = 17,
+        /// <summary>The AutoID Device configuration is not valid.</summary>
         INVALID_CONFIGURATION = 18,
+        /// <summary>This error indicates that there is a general error in the communication between the transponder and the reader.</summary>
         RF_COMMUNICATION_ERROR = 19,
+        /// <summary>The AutoID Device has a hardware fault.</summary>
         DEVICE_FAULT = 20,
+        /// <summary>The battery of the (active) tag is low.</summary>
         TAG_HAS_LOW_BATTERY = 21,
     }
     
+    /// <summary>
+    /// DeviceStatusEnumeration enumeration
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.2.2" />
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3003")]
     public enum DeviceStatusEnumeration
     {
@@ -36,6 +66,10 @@ namespace Ua.AutoID
         Busy = 3,
     }
     
+    /// <summary>
+    /// LocationTypeEnumeration enumeration
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.2.3" />
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3009")]
     public enum LocationTypeEnumeration
     {
@@ -45,6 +79,10 @@ namespace Ua.AutoID
         NAME = 3,
     }
     
+    /// <summary>
+    /// RfidLockOperationEnumeration enumeration
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.2.4" />
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3016")]
     public enum RfidLockOperationEnumeration
     {
@@ -54,6 +92,10 @@ namespace Ua.AutoID
         PermanentUnlock = 3,
     }
     
+    /// <summary>
+    /// RfidLockRegionEnumeration enumeration
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.2.5" />
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3015")]
     public enum RfidLockRegionEnumeration
     {
@@ -64,6 +106,10 @@ namespace Ua.AutoID
         User = 4,
     }
     
+    /// <summary>
+    /// RfidPasswordTypeEnumeration enumeration
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.2.6" />
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3014")]
     public enum RfidPasswordTypeEnumeration
     {
@@ -73,6 +119,10 @@ namespace Ua.AutoID
         Write = 3,
     }
     
+    /// <summary>
+    /// Result values of an AutoID Identifier access.
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.3.17" />
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5022")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5023")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3017")]
@@ -82,6 +132,7 @@ namespace Ua.AutoID
         public ScanData Identifier { get; set; }
         public System.DateTime Timestamp { get; set; }
         
+        /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
             base.Encode(encoder);
@@ -92,6 +143,7 @@ namespace Ua.AutoID
             encoder.PopNamespace();
         }
         
+        /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
             base.Decode(decoder);
@@ -103,6 +155,10 @@ namespace Ua.AutoID
         }
     }
     
+    /// <summary>
+    /// Additional result values of an Rfid Transponder access.
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.3.18" />
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5024")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5025")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3018")]
@@ -116,6 +172,7 @@ namespace Ua.AutoID
         public string Polarization { get; set; }
         public int Strength { get; set; }
         
+        /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
             base.Encode(encoder);
@@ -130,6 +187,7 @@ namespace Ua.AutoID
             encoder.PopNamespace();
         }
         
+        /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
             base.Decode(decoder);
@@ -145,6 +203,10 @@ namespace Ua.AutoID
         }
     }
     
+    /// <summary>
+    /// Class for AntennaNameIdPair
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.3.3" />
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5017")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5018")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3011")]
@@ -153,6 +215,7 @@ namespace Ua.AutoID
         public int AntennaId { get; set; }
         public string AntennaName { get; set; }
         
+        /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
             base.Encode(encoder);
@@ -162,6 +225,7 @@ namespace Ua.AutoID
             encoder.PopNamespace();
         }
         
+        /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
             base.Decode(decoder);
@@ -172,6 +236,9 @@ namespace Ua.AutoID
         }
     }
     
+    /// <summary>
+    /// Class for DhcpGeoConfCoordinate
+    /// </summary>
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5034")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5035")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3023")]
@@ -189,6 +256,7 @@ namespace Ua.AutoID
         public short AltitudeFraction { get; set; }
         public byte Datum { get; set; }
         
+        /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
             base.Encode(encoder);
@@ -207,6 +275,7 @@ namespace Ua.AutoID
             encoder.PopNamespace();
         }
         
+        /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
             base.Decode(decoder);
@@ -226,6 +295,10 @@ namespace Ua.AutoID
         }
     }
     
+    /// <summary>
+    /// Class for LocalCoordinate
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.3.4" />
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5028")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5029")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3019")]
@@ -238,6 +311,7 @@ namespace Ua.AutoID
         public double DilutionOfPrecision { get; set; }
         public int UsefulPrecision { get; set; }
         
+        /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
             base.Encode(encoder);
@@ -251,6 +325,7 @@ namespace Ua.AutoID
             encoder.PopNamespace();
         }
         
+        /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
             base.Decode(decoder);
@@ -265,6 +340,10 @@ namespace Ua.AutoID
         }
     }
     
+    /// <summary>
+    /// Class for Position
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.3.5" />
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5007")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5008")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3004")]
@@ -276,6 +355,7 @@ namespace Ua.AutoID
         public int SizeY { get; set; }
         public int Rotation { get; set; }
         
+        /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
             base.Encode(encoder);
@@ -288,6 +368,7 @@ namespace Ua.AutoID
             encoder.PopNamespace();
         }
         
+        /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
             base.Decode(decoder);
@@ -301,6 +382,10 @@ namespace Ua.AutoID
         }
     }
     
+    /// <summary>
+    /// Class for RfidSighting
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.3.13" />
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5009")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5010")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3006")]
@@ -311,6 +396,7 @@ namespace Ua.AutoID
         public System.DateTime Timestamp { get; set; }
         public int CurrentPowerLevel { get; set; }
         
+        /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
             base.Encode(encoder);
@@ -322,6 +408,7 @@ namespace Ua.AutoID
             encoder.PopNamespace();
         }
         
+        /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
             base.Decode(decoder);
@@ -334,6 +421,10 @@ namespace Ua.AutoID
         }
     }
     
+    /// <summary>
+    /// Class for Rotation
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.3.14" />
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5050")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5051")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3029")]
@@ -343,6 +434,7 @@ namespace Ua.AutoID
         public double Pitch { get; set; }
         public double Roll { get; set; }
         
+        /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
             base.Encode(encoder);
@@ -353,6 +445,7 @@ namespace Ua.AutoID
             encoder.PopNamespace();
         }
         
+        /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
             base.Decode(decoder);
@@ -364,6 +457,10 @@ namespace Ua.AutoID
         }
     }
     
+    /// <summary>
+    /// Class for ScanDataEpc
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.3.6" />
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5036")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5037")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3024")]
@@ -374,6 +471,7 @@ namespace Ua.AutoID
         public ushort XPC_W1 { get; set; }
         public ushort XPC_W2 { get; set; }
         
+        /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
             base.Encode(encoder);
@@ -385,6 +483,7 @@ namespace Ua.AutoID
             encoder.PopNamespace();
         }
         
+        /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
             base.Decode(decoder);
@@ -397,6 +496,10 @@ namespace Ua.AutoID
         }
     }
     
+    /// <summary>
+    /// Class for ScanResult
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.3.8" />
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5002")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5003")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3001")]
@@ -407,6 +510,7 @@ namespace Ua.AutoID
         public System.DateTime Timestamp { get; set; }
         public Location Location { get; set; }
         
+        /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
             base.Encode(encoder);
@@ -418,6 +522,7 @@ namespace Ua.AutoID
             encoder.PopNamespace();
         }
         
+        /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
             base.Decode(decoder);
@@ -430,6 +535,10 @@ namespace Ua.AutoID
         }
     }
     
+    /// <summary>
+    /// Class for OcrScanResult
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.3.9" />
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5004")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5005")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3002")]
@@ -441,6 +550,7 @@ namespace Ua.AutoID
         public string Font { get; set; }
         public System.DateTime DecodingTime { get; set; }
         
+        /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
             base.Encode(encoder);
@@ -453,6 +563,7 @@ namespace Ua.AutoID
             encoder.PopNamespace();
         }
         
+        /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
             base.Decode(decoder);
@@ -466,6 +577,10 @@ namespace Ua.AutoID
         }
     }
     
+    /// <summary>
+    /// Class for OpticalScanResult
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.3.10" />
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5040")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5041")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3026")]
@@ -476,6 +591,7 @@ namespace Ua.AutoID
         public string Symbology { get; set; }
         public Workstation.ServiceModel.Ua.NodeId ImageId { get; set; }
         
+        /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
             base.Encode(encoder);
@@ -487,6 +603,7 @@ namespace Ua.AutoID
             encoder.PopNamespace();
         }
         
+        /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
             base.Decode(decoder);
@@ -499,6 +616,10 @@ namespace Ua.AutoID
         }
     }
     
+    /// <summary>
+    /// Class for OpticalVerifierScanResult
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.3.11" />
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5052")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5053")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3030")]
@@ -514,6 +635,7 @@ namespace Ua.AutoID
         public short Decode_ { get; set; }
         public short PrintGain { get; set; }
         
+        /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
             base.Encode(encoder);
@@ -530,6 +652,7 @@ namespace Ua.AutoID
             encoder.PopNamespace();
         }
         
+        /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
             base.Decode(decoder);
@@ -547,6 +670,10 @@ namespace Ua.AutoID
         }
     }
     
+    /// <summary>
+    /// Class for RfidScanResult
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.3.12" />
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5011")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5012")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3007")]
@@ -554,6 +681,7 @@ namespace Ua.AutoID
     {
         public RfidSighting[] Sighting { get; set; }
         
+        /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
             base.Encode(encoder);
@@ -562,6 +690,7 @@ namespace Ua.AutoID
             encoder.PopNamespace();
         }
         
+        /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
             base.Decode(decoder);
@@ -571,6 +700,10 @@ namespace Ua.AutoID
         }
     }
     
+    /// <summary>
+    /// Class for RtlsLocationResult
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.3.15" />
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5048")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5049")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3028")]
@@ -581,6 +714,7 @@ namespace Ua.AutoID
         public Rotation Rotation { get; set; }
         public System.DateTime ReceiveTime { get; set; }
         
+        /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
             base.Encode(encoder);
@@ -592,6 +726,7 @@ namespace Ua.AutoID
             encoder.PopNamespace();
         }
         
+        /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
             base.Decode(decoder);
@@ -604,6 +739,10 @@ namespace Ua.AutoID
         }
     }
     
+    /// <summary>
+    /// Class for ScanSettings
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.3.7" />
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5015")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5016")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3010")]
@@ -614,6 +753,7 @@ namespace Ua.AutoID
         public bool DataAvailable { get; set; }
         public LocationTypeEnumeration LocationType { get; set; }
         
+        /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
             base.Encode(encoder);
@@ -625,6 +765,7 @@ namespace Ua.AutoID
             encoder.PopNamespace();
         }
         
+        /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
             base.Decode(decoder);
@@ -637,6 +778,10 @@ namespace Ua.AutoID
         }
     }
     
+    /// <summary>
+    /// Class for Location
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.4.1" />
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5013")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5014")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3008")]
@@ -696,6 +841,7 @@ namespace Ua.AutoID
         }
         
         
+        /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
@@ -723,6 +869,7 @@ namespace Ua.AutoID
             encoder.PopNamespace();
         }
         
+        /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
@@ -752,6 +899,10 @@ namespace Ua.AutoID
         }
     }
     
+    /// <summary>
+    /// Class for ScanData
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.4.2" />
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5030")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5031")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3020")]
@@ -811,6 +962,7 @@ namespace Ua.AutoID
         }
         
         
+        /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
@@ -838,6 +990,7 @@ namespace Ua.AutoID
             encoder.PopNamespace();
         }
         
+        /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
@@ -867,6 +1020,10 @@ namespace Ua.AutoID
         }
     }
     
+    /// <summary>
+    /// Class for WGS84Coordinate
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.3.16" />
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5046")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5047")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3027")]
@@ -882,6 +1039,7 @@ namespace Ua.AutoID
         public int UsefulPrecisionLatLon { get; set; }
         public int UsefulPrecisionAlt { get; set; }
         
+        /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
             base.Encode(encoder);
@@ -898,6 +1056,7 @@ namespace Ua.AutoID
             encoder.PopNamespace();
         }
         
+        /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
             base.Decode(decoder);

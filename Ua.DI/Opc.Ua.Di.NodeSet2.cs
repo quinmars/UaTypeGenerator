@@ -1,15 +1,28 @@
 namespace Ua.DI
 {
+    /// <summary>
+    /// DeviceHealthEnumeration enumeration
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/DI/v102/docs/5.5.4" />
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/DI/;i=6244")]
     public enum DeviceHealthEnumeration
     {
+        /// <summary>This device functions normally.</summary>
         NORMAL = 0,
+        /// <summary>Malfunction of the device or any of its peripherals.</summary>
         FAILURE = 1,
+        /// <summary>Functional checks are currently performed.</summary>
         CHECK_FUNCTION = 2,
+        /// <summary>The device is currently working outside of its specified range or that internal diagnoses indicate deviations from measured or set values.</summary>
         OFF_SPEC = 3,
+        /// <summary>This element is working, but a maintenance operation is required.</summary>
         MAINTENANCE_REQUIRED = 4,
     }
     
+    /// <summary>
+    /// Class for FetchResultDataType
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/DI/v102/docs/8.2.6" />
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/DI/;i=6551")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/DI/;i=6535")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/DI/;i=6522")]
@@ -17,6 +30,10 @@ namespace Ua.DI
     {
     }
     
+    /// <summary>
+    /// Class for TransferResultErrorDataType
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/DI/v102/docs/8.2.6" />
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/DI/;i=15891")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/DI/;i=15900")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/DI/;i=15888")]
@@ -25,6 +42,7 @@ namespace Ua.DI
         public int Status { get; set; }
         public Workstation.ServiceModel.Ua.DiagnosticInfo Diagnostics { get; set; }
         
+        /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
             base.Encode(encoder);
@@ -34,6 +52,7 @@ namespace Ua.DI
             encoder.PopNamespace();
         }
         
+        /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
             base.Decode(decoder);
@@ -44,6 +63,10 @@ namespace Ua.DI
         }
     }
     
+    /// <summary>
+    /// Class for TransferResultDataDataType
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/DI/v102/docs/8.2.6" />
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/DI/;i=15892")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/DI/;i=15901")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/DI/;i=15889")]
@@ -53,6 +76,7 @@ namespace Ua.DI
         public bool EndOfResults { get; set; }
         public ParameterResultDataType[] ParameterDefs { get; set; }
         
+        /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
             base.Encode(encoder);
@@ -63,6 +87,7 @@ namespace Ua.DI
             encoder.PopNamespace();
         }
         
+        /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
             base.Decode(decoder);
@@ -74,6 +99,10 @@ namespace Ua.DI
         }
     }
     
+    /// <summary>
+    /// Class for ParameterResultDataType
+    /// </summary>
+    /// <seealso href="https://reference.opcfoundation.org/v104/DI/v102/docs/8.2.6" />
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/DI/;i=6554")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/DI/;i=6538")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/DI/;i=6525")]
@@ -83,6 +112,7 @@ namespace Ua.DI
         public Workstation.ServiceModel.Ua.StatusCode StatusCode { get; set; }
         public Workstation.ServiceModel.Ua.DiagnosticInfo Diagnostics { get; set; }
         
+        /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
             base.Encode(encoder);
@@ -93,6 +123,7 @@ namespace Ua.DI
             encoder.PopNamespace();
         }
         
+        /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
             base.Decode(decoder);

@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Workstation.UaClient" Version="2.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ua.DI\Ua.DI.csproj">
+      <Private>true</Private>
+    </ProjectReference>
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="Build">
+    <Exec Command="cd $(ProjectDir) &amp;&amp; dotnet ..\UaTypeGenerator\bin\Debug\netcoreapp2.0\UaTypeGenerator.dll -f Opc.Ua.AutoID.NodeSet2.xml -n Ua.AutoID -a .\bin\Debug\netstandard2.0\Ua.DI.dll" />
+  </Target>
+
+  <PropertyGroup>
+    <BuildDependsOn>$(BuildDependsOn);GenerateService</BuildDependsOn>
+  </PropertyGroup>
+</Project>

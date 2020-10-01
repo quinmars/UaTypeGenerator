@@ -108,6 +108,7 @@ namespace UaTypeGenerator
                 }
 
                 writer.WriteLine($"encoder.PushNamespace(\"{c.Namespace}\");");
+                writer.WriteLine();
                 foreach (var p in c.Properties)
                 {
                     var netType = _typeSet.GetNetType(p.DataTypeId);
@@ -115,6 +116,7 @@ namespace UaTypeGenerator
 
                     writer.WriteLine($"encoder.Write{suffix}(\"{p.SymbolicName}\", {p.SymbolicName});");
                 }
+                writer.WriteLine();
                 writer.WriteLine("encoder.PopNamespace();");
                 writer.Indent--;
                 writer.WriteLine("}");
@@ -130,6 +132,7 @@ namespace UaTypeGenerator
                 }
 
                 writer.WriteLine($"decoder.PushNamespace(\"{c.Namespace}\");");
+                writer.WriteLine();
                 foreach (var p in c.Properties)
                 {
                     var netType = _typeSet.GetNetType(p.DataTypeId);
@@ -137,6 +140,7 @@ namespace UaTypeGenerator
 
                     writer.WriteLine($"{p.SymbolicName} = decoder.Read{suffix}(\"{p.SymbolicName}\");");
                 }
+                writer.WriteLine();
                 writer.WriteLine("decoder.PopNamespace();");
                 writer.Indent--;
                 writer.WriteLine("}");
@@ -198,15 +202,14 @@ namespace UaTypeGenerator
                 writer.WriteLine();
             }
 
-            writer.WriteLine();
             WriteInheritDoc(writer);
             writer.WriteLine($"public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)");
             writer.WriteLine("{");
             writer.Indent++;
 
             writer.WriteLine($"encoder.PushNamespace(\"{c.Namespace}\");");
-            writer.WriteLine($"encoder.WriteUInt32(\"SwitchField\", (uint)SwitchField);");
             writer.WriteLine();
+            writer.WriteLine($"encoder.WriteUInt32(\"SwitchField\", (uint)SwitchField);");
             writer.WriteLine($"switch (SwitchField)");
             writer.WriteLine("{");
             writer.Indent++;

@@ -137,9 +137,11 @@ namespace Ua.AutoID
         {
             base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             encoder.WriteString("CodeType", CodeType);
             encoder.WriteExtensionObject<ScanData>("Identifier", Identifier);
             encoder.WriteDateTime("Timestamp", Timestamp);
+            
             encoder.PopNamespace();
         }
         
@@ -148,9 +150,11 @@ namespace Ua.AutoID
         {
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             CodeType = decoder.ReadString("CodeType");
             Identifier = decoder.ReadExtensionObject<ScanData>("Identifier");
             Timestamp = decoder.ReadDateTime("Timestamp");
+            
             decoder.PopNamespace();
         }
     }
@@ -177,6 +181,7 @@ namespace Ua.AutoID
         {
             base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             encoder.WriteString("CodeTypeRWData", CodeTypeRWData);
             encoder.WriteExtensionObject<ScanData>("RWData", RWData);
             encoder.WriteInt32("Antenna", Antenna);
@@ -184,6 +189,7 @@ namespace Ua.AutoID
             encoder.WriteUInt16("PC", PC);
             encoder.WriteString("Polarization", Polarization);
             encoder.WriteInt32("Strength", Strength);
+            
             encoder.PopNamespace();
         }
         
@@ -192,6 +198,7 @@ namespace Ua.AutoID
         {
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             CodeTypeRWData = decoder.ReadString("CodeTypeRWData");
             RWData = decoder.ReadExtensionObject<ScanData>("RWData");
             Antenna = decoder.ReadInt32("Antenna");
@@ -199,6 +206,7 @@ namespace Ua.AutoID
             PC = decoder.ReadUInt16("PC");
             Polarization = decoder.ReadString("Polarization");
             Strength = decoder.ReadInt32("Strength");
+            
             decoder.PopNamespace();
         }
     }
@@ -220,8 +228,10 @@ namespace Ua.AutoID
         {
             base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             encoder.WriteInt32("AntennaId", AntennaId);
             encoder.WriteString("AntennaName", AntennaName);
+            
             encoder.PopNamespace();
         }
         
@@ -230,8 +240,10 @@ namespace Ua.AutoID
         {
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             AntennaId = decoder.ReadInt32("AntennaId");
             AntennaName = decoder.ReadString("AntennaName");
+            
             decoder.PopNamespace();
         }
     }
@@ -261,6 +273,7 @@ namespace Ua.AutoID
         {
             base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             encoder.WriteByte("LaRes", LaRes);
             encoder.WriteInt16("LatitudeInteger", LatitudeInteger);
             encoder.WriteInt32("LatitudeFraction", LatitudeFraction);
@@ -272,6 +285,7 @@ namespace Ua.AutoID
             encoder.WriteInt32("AltitudeInteger", AltitudeInteger);
             encoder.WriteInt16("AltitudeFraction", AltitudeFraction);
             encoder.WriteByte("Datum", Datum);
+            
             encoder.PopNamespace();
         }
         
@@ -280,6 +294,7 @@ namespace Ua.AutoID
         {
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             LaRes = decoder.ReadByte("LaRes");
             LatitudeInteger = decoder.ReadInt16("LatitudeInteger");
             LatitudeFraction = decoder.ReadInt32("LatitudeFraction");
@@ -291,6 +306,7 @@ namespace Ua.AutoID
             AltitudeInteger = decoder.ReadInt32("AltitudeInteger");
             AltitudeFraction = decoder.ReadInt16("AltitudeFraction");
             Datum = decoder.ReadByte("Datum");
+            
             decoder.PopNamespace();
         }
     }
@@ -316,12 +332,14 @@ namespace Ua.AutoID
         {
             base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             encoder.WriteDouble("X", X);
             encoder.WriteDouble("Y", Y);
             encoder.WriteDouble("Z", Z);
             encoder.WriteDateTime("Timestamp", Timestamp);
             encoder.WriteDouble("DilutionOfPrecision", DilutionOfPrecision);
             encoder.WriteInt32("UsefulPrecision", UsefulPrecision);
+            
             encoder.PopNamespace();
         }
         
@@ -330,12 +348,14 @@ namespace Ua.AutoID
         {
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             X = decoder.ReadDouble("X");
             Y = decoder.ReadDouble("Y");
             Z = decoder.ReadDouble("Z");
             Timestamp = decoder.ReadDateTime("Timestamp");
             DilutionOfPrecision = decoder.ReadDouble("DilutionOfPrecision");
             UsefulPrecision = decoder.ReadInt32("UsefulPrecision");
+            
             decoder.PopNamespace();
         }
     }
@@ -360,11 +380,13 @@ namespace Ua.AutoID
         {
             base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             encoder.WriteInt32("PositionX", PositionX);
             encoder.WriteInt32("PositionY", PositionY);
             encoder.WriteInt32("SizeX", SizeX);
             encoder.WriteInt32("SizeY", SizeY);
             encoder.WriteInt32("Rotation", Rotation);
+            
             encoder.PopNamespace();
         }
         
@@ -373,11 +395,13 @@ namespace Ua.AutoID
         {
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             PositionX = decoder.ReadInt32("PositionX");
             PositionY = decoder.ReadInt32("PositionY");
             SizeX = decoder.ReadInt32("SizeX");
             SizeY = decoder.ReadInt32("SizeY");
             Rotation = decoder.ReadInt32("Rotation");
+            
             decoder.PopNamespace();
         }
     }
@@ -401,10 +425,12 @@ namespace Ua.AutoID
         {
             base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             encoder.WriteInt32("Antenna", Antenna);
             encoder.WriteInt32("Strength", Strength);
             encoder.WriteDateTime("Timestamp", Timestamp);
             encoder.WriteInt32("CurrentPowerLevel", CurrentPowerLevel);
+            
             encoder.PopNamespace();
         }
         
@@ -413,10 +439,12 @@ namespace Ua.AutoID
         {
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             Antenna = decoder.ReadInt32("Antenna");
             Strength = decoder.ReadInt32("Strength");
             Timestamp = decoder.ReadDateTime("Timestamp");
             CurrentPowerLevel = decoder.ReadInt32("CurrentPowerLevel");
+            
             decoder.PopNamespace();
         }
     }
@@ -439,9 +467,11 @@ namespace Ua.AutoID
         {
             base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             encoder.WriteDouble("Yaw", Yaw);
             encoder.WriteDouble("Pitch", Pitch);
             encoder.WriteDouble("Roll", Roll);
+            
             encoder.PopNamespace();
         }
         
@@ -450,9 +480,11 @@ namespace Ua.AutoID
         {
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             Yaw = decoder.ReadDouble("Yaw");
             Pitch = decoder.ReadDouble("Pitch");
             Roll = decoder.ReadDouble("Roll");
+            
             decoder.PopNamespace();
         }
     }
@@ -476,10 +508,12 @@ namespace Ua.AutoID
         {
             base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             encoder.WriteUInt16("PC", PC);
             encoder.WriteByteString("UId", UId);
             encoder.WriteUInt16("XPC_W1", XPC_W1);
             encoder.WriteUInt16("XPC_W2", XPC_W2);
+            
             encoder.PopNamespace();
         }
         
@@ -488,10 +522,12 @@ namespace Ua.AutoID
         {
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             PC = decoder.ReadUInt16("PC");
             UId = decoder.ReadByteString("UId");
             XPC_W1 = decoder.ReadUInt16("XPC_W1");
             XPC_W2 = decoder.ReadUInt16("XPC_W2");
+            
             decoder.PopNamespace();
         }
     }
@@ -515,10 +551,12 @@ namespace Ua.AutoID
         {
             base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             encoder.WriteString("CodeType", CodeType);
             encoder.WriteExtensionObject<ScanData>("ScanData", ScanData);
             encoder.WriteDateTime("Timestamp", Timestamp);
             encoder.WriteExtensionObject<Location>("Location", Location);
+            
             encoder.PopNamespace();
         }
         
@@ -527,10 +565,12 @@ namespace Ua.AutoID
         {
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             CodeType = decoder.ReadString("CodeType");
             ScanData = decoder.ReadExtensionObject<ScanData>("ScanData");
             Timestamp = decoder.ReadDateTime("Timestamp");
             Location = decoder.ReadExtensionObject<Location>("Location");
+            
             decoder.PopNamespace();
         }
     }
@@ -555,11 +595,13 @@ namespace Ua.AutoID
         {
             base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             encoder.WriteNodeId("ImageId", ImageId);
             encoder.WriteByte("Quality", Quality);
             encoder.WriteExtensionObject<Position>("Position", Position);
             encoder.WriteString("Font", Font);
             encoder.WriteDateTime("DecodingTime", DecodingTime);
+            
             encoder.PopNamespace();
         }
         
@@ -568,11 +610,13 @@ namespace Ua.AutoID
         {
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             ImageId = decoder.ReadNodeId("ImageId");
             Quality = decoder.ReadByte("Quality");
             Position = decoder.ReadExtensionObject<Position>("Position");
             Font = decoder.ReadString("Font");
             DecodingTime = decoder.ReadDateTime("DecodingTime");
+            
             decoder.PopNamespace();
         }
     }
@@ -596,10 +640,12 @@ namespace Ua.AutoID
         {
             base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             encoder.WriteFloat("Grade", Grade);
             encoder.WriteExtensionObject<Position>("Position", Position);
             encoder.WriteString("Symbology", Symbology);
             encoder.WriteNodeId("ImageId", ImageId);
+            
             encoder.PopNamespace();
         }
         
@@ -608,10 +654,12 @@ namespace Ua.AutoID
         {
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             Grade = decoder.ReadFloat("Grade");
             Position = decoder.ReadExtensionObject<Position>("Position");
             Symbology = decoder.ReadString("Symbology");
             ImageId = decoder.ReadNodeId("ImageId");
+            
             decoder.PopNamespace();
         }
     }
@@ -640,6 +688,7 @@ namespace Ua.AutoID
         {
             base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             encoder.WriteString("IsoGrade", IsoGrade);
             encoder.WriteInt16("RMin", RMin);
             encoder.WriteInt16("SymbolContrast", SymbolContrast);
@@ -649,6 +698,7 @@ namespace Ua.AutoID
             encoder.WriteInt16("Decodability", Decodability);
             encoder.WriteInt16("Decode_", Decode_);
             encoder.WriteInt16("PrintGain", PrintGain);
+            
             encoder.PopNamespace();
         }
         
@@ -657,6 +707,7 @@ namespace Ua.AutoID
         {
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             IsoGrade = decoder.ReadString("IsoGrade");
             RMin = decoder.ReadInt16("RMin");
             SymbolContrast = decoder.ReadInt16("SymbolContrast");
@@ -666,6 +717,7 @@ namespace Ua.AutoID
             Decodability = decoder.ReadInt16("Decodability");
             Decode_ = decoder.ReadInt16("Decode_");
             PrintGain = decoder.ReadInt16("PrintGain");
+            
             decoder.PopNamespace();
         }
     }
@@ -686,7 +738,9 @@ namespace Ua.AutoID
         {
             base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             encoder.WriteExtensionObjectArray<RfidSighting>("Sighting", Sighting);
+            
             encoder.PopNamespace();
         }
         
@@ -695,7 +749,9 @@ namespace Ua.AutoID
         {
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             Sighting = decoder.ReadExtensionObjectArray<RfidSighting>("Sighting");
+            
             decoder.PopNamespace();
         }
     }
@@ -719,10 +775,12 @@ namespace Ua.AutoID
         {
             base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             encoder.WriteDouble("Speed", Speed);
             encoder.WriteDouble("Heading", Heading);
             encoder.WriteExtensionObject<Rotation>("Rotation", Rotation);
             encoder.WriteDateTime("ReceiveTime", ReceiveTime);
+            
             encoder.PopNamespace();
         }
         
@@ -731,10 +789,12 @@ namespace Ua.AutoID
         {
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             Speed = decoder.ReadDouble("Speed");
             Heading = decoder.ReadDouble("Heading");
             Rotation = decoder.ReadExtensionObject<Rotation>("Rotation");
             ReceiveTime = decoder.ReadDateTime("ReceiveTime");
+            
             decoder.PopNamespace();
         }
     }
@@ -758,10 +818,12 @@ namespace Ua.AutoID
         {
             base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             encoder.WriteDouble("Duration", Duration);
             encoder.WriteInt32("Cycles", Cycles);
             encoder.WriteBoolean("DataAvailable", DataAvailable);
             encoder.WriteEnumeration<LocationTypeEnumeration>("LocationType", LocationType);
+            
             encoder.PopNamespace();
         }
         
@@ -770,10 +832,12 @@ namespace Ua.AutoID
         {
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             Duration = decoder.ReadDouble("Duration");
             Cycles = decoder.ReadInt32("Cycles");
             DataAvailable = decoder.ReadBoolean("DataAvailable");
             LocationType = decoder.ReadEnumeration<LocationTypeEnumeration>("LocationType");
+            
             decoder.PopNamespace();
         }
     }
@@ -840,13 +904,12 @@ namespace Ua.AutoID
             }
         }
         
-        
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
-            encoder.WriteUInt32("SwitchField", (uint)SwitchField);
             
+            encoder.WriteUInt32("SwitchField", (uint)SwitchField);
             switch (SwitchField)
             {
                 case UnionField.Null:
@@ -961,13 +1024,12 @@ namespace Ua.AutoID
             }
         }
         
-        
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
-            encoder.WriteUInt32("SwitchField", (uint)SwitchField);
             
+            encoder.WriteUInt32("SwitchField", (uint)SwitchField);
             switch (SwitchField)
             {
                 case UnionField.Null:
@@ -1044,6 +1106,7 @@ namespace Ua.AutoID
         {
             base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             encoder.WriteString("N_S_Hemisphere", N_S_Hemisphere);
             encoder.WriteDouble("Latitude", Latitude);
             encoder.WriteString("E_W_Hemisphere", E_W_Hemisphere);
@@ -1053,6 +1116,7 @@ namespace Ua.AutoID
             encoder.WriteDouble("DilutionOfPrecision", DilutionOfPrecision);
             encoder.WriteInt32("UsefulPrecisionLatLon", UsefulPrecisionLatLon);
             encoder.WriteInt32("UsefulPrecisionAlt", UsefulPrecisionAlt);
+            
             encoder.PopNamespace();
         }
         
@@ -1061,6 +1125,7 @@ namespace Ua.AutoID
         {
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
             N_S_Hemisphere = decoder.ReadString("N_S_Hemisphere");
             Latitude = decoder.ReadDouble("Latitude");
             E_W_Hemisphere = decoder.ReadString("E_W_Hemisphere");
@@ -1070,6 +1135,7 @@ namespace Ua.AutoID
             DilutionOfPrecision = decoder.ReadDouble("DilutionOfPrecision");
             UsefulPrecisionLatLon = decoder.ReadInt32("UsefulPrecisionLatLon");
             UsefulPrecisionAlt = decoder.ReadInt32("UsefulPrecisionAlt");
+            
             decoder.PopNamespace();
         }
     }

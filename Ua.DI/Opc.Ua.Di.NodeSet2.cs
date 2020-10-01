@@ -47,8 +47,10 @@ namespace Ua.DI
         {
             base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/DI/");
+            
             encoder.WriteInt32("Status", Status);
             encoder.WriteDiagnosticInfo("Diagnostics", Diagnostics);
+            
             encoder.PopNamespace();
         }
         
@@ -57,8 +59,10 @@ namespace Ua.DI
         {
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/DI/");
+            
             Status = decoder.ReadInt32("Status");
             Diagnostics = decoder.ReadDiagnosticInfo("Diagnostics");
+            
             decoder.PopNamespace();
         }
     }
@@ -81,9 +85,11 @@ namespace Ua.DI
         {
             base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/DI/");
+            
             encoder.WriteInt32("SequenceNumber", SequenceNumber);
             encoder.WriteBoolean("EndOfResults", EndOfResults);
             encoder.WriteExtensionObjectArray<ParameterResultDataType>("ParameterDefs", ParameterDefs);
+            
             encoder.PopNamespace();
         }
         
@@ -92,9 +98,11 @@ namespace Ua.DI
         {
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/DI/");
+            
             SequenceNumber = decoder.ReadInt32("SequenceNumber");
             EndOfResults = decoder.ReadBoolean("EndOfResults");
             ParameterDefs = decoder.ReadExtensionObjectArray<ParameterResultDataType>("ParameterDefs");
+            
             decoder.PopNamespace();
         }
     }
@@ -117,9 +125,11 @@ namespace Ua.DI
         {
             base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/DI/");
+            
             encoder.WriteQualifiedNameArray("NodePath", NodePath);
             encoder.WriteStatusCode("StatusCode", StatusCode);
             encoder.WriteDiagnosticInfo("Diagnostics", Diagnostics);
+            
             encoder.PopNamespace();
         }
         
@@ -128,9 +138,11 @@ namespace Ua.DI
         {
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/DI/");
+            
             NodePath = decoder.ReadQualifiedNameArray("NodePath");
             StatusCode = decoder.ReadStatusCode("StatusCode");
             Diagnostics = decoder.ReadDiagnosticInfo("Diagnostics");
+            
             decoder.PopNamespace();
         }
     }

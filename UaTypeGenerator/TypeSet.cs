@@ -319,5 +319,12 @@ namespace UaTypeGenerator
                 .Where(r => r.ReferenceType == "HasSubtype")
                 .Select(r => ParseNodeId(r.Value))
                 .FirstOrDefault();
+
+        public bool ParentHasOptionalProperties(ClassDefinition c)
+        {
+            var p = Definitions.OfType<ClassDefinition>().FirstOrDefault(d => d.DataTypeId == c.ParentDataTypeId);
+            
+            return p != null && (p.OptionalPropertyCount != 0 || ParentHasOptionalProperties(p));
+        }
     }
 }

@@ -1,5 +1,12 @@
 namespace Ua.AutoID
 {
+    // Ideally this should go into Workstation.UaClient
+    public interface IOptionalFields
+    {
+        int OptionalFieldCount { get; }
+        uint EncodingMask { get; }
+    }
+    
     /// <summary>
     /// AutoIdOperationStatusEnumeration enumeration
     /// </summary>
@@ -126,11 +133,53 @@ namespace Ua.AutoID
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5022")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5023")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3017")]
-    public class AccessResult : Workstation.ServiceModel.Ua.Structure
+    public class AccessResult : Workstation.ServiceModel.Ua.Structure,
+            IOptionalFields
     {
-        public string CodeType { get; set; }
-        public ScanData Identifier { get; set; }
-        public System.DateTime Timestamp { get; set; }
+        public virtual int OptionalFieldCount => 3;
+        public uint EncodingMask { get; protected set; }
+        private string _codeType;
+        public string CodeType
+        {
+            get => _codeType;
+            set
+            {
+                uint flag = 1u << 0;
+                
+                _codeType = value;
+                EncodingMask = value is null
+                    ? EncodingMask | flag
+                    : EncodingMask & ~flag;
+            }
+        }
+        private ScanData _identifier;
+        public ScanData Identifier
+        {
+            get => _identifier;
+            set
+            {
+                uint flag = 1u << 1;
+                
+                _identifier = value;
+                EncodingMask = value is null
+                    ? EncodingMask | flag
+                    : EncodingMask & ~flag;
+            }
+        }
+        private System.DateTime? _timestamp;
+        public System.DateTime? Timestamp
+        {
+            get => _timestamp;
+            set
+            {
+                uint flag = 1u << 2;
+                
+                _timestamp = value;
+                EncodingMask = value is null
+                    ? EncodingMask | flag
+                    : EncodingMask & ~flag;
+            }
+        }
         
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
@@ -138,9 +187,19 @@ namespace Ua.AutoID
             base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
-            encoder.WriteString("CodeType", CodeType);
-            encoder.WriteExtensionObject<ScanData>("Identifier", Identifier);
-            encoder.WriteDateTime("Timestamp", Timestamp);
+            encoder.WriteUInt32("EncodingMask", EncodingMask);
+            if (CodeType is {} opt0)
+            {
+                encoder.WriteString("CodeType", opt0);
+            }
+            if (Identifier is {} opt1)
+            {
+                encoder.WriteExtensionObject<ScanData>("Identifier", opt1);
+            }
+            if (Timestamp is {} opt2)
+            {
+                encoder.WriteDateTime("Timestamp", opt2);
+            }
             
             encoder.PopNamespace();
         }
@@ -148,12 +207,37 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
+            EncodingMask = decoder.ReadUInt32(null);
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
-            CodeType = decoder.ReadString("CodeType");
-            Identifier = decoder.ReadExtensionObject<ScanData>("Identifier");
-            Timestamp = decoder.ReadDateTime("Timestamp");
+            if ((EncodingMask & (1u << 0)) != 0)
+            {
+                CodeType = decoder.ReadString("CodeType");
+            }
+            else
+            {
+                CodeType = null;
+            }
+            
+            if ((EncodingMask & (1u << 1)) != 0)
+            {
+                Identifier = decoder.ReadExtensionObject<ScanData>("Identifier");
+            }
+            else
+            {
+                Identifier = null;
+            }
+            
+            if ((EncodingMask & (1u << 2)) != 0)
+            {
+                Timestamp = decoder.ReadDateTime("Timestamp");
+            }
+            else
+            {
+                Timestamp = null;
+            }
+            
             
             decoder.PopNamespace();
         }
@@ -168,13 +252,105 @@ namespace Ua.AutoID
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3018")]
     public class RfidAccessResult : AccessResult
     {
-        public string CodeTypeRWData { get; set; }
-        public ScanData RWData { get; set; }
-        public int Antenna { get; set; }
-        public int CurrentPowerLevel { get; set; }
-        public ushort PC { get; set; }
-        public string Polarization { get; set; }
-        public int Strength { get; set; }
+        public override int OptionalFieldCount => base.OptionalFieldCount + 7;
+        private string _codeTypeRWData;
+        public string CodeTypeRWData
+        {
+            get => _codeTypeRWData;
+            set
+            {
+                uint flag = 1u << (0 + base.OptionalFieldCount);
+                
+                _codeTypeRWData = value;
+                EncodingMask = value is null
+                    ? EncodingMask | flag
+                    : EncodingMask & ~flag;
+            }
+        }
+        private ScanData _rWData;
+        public ScanData RWData
+        {
+            get => _rWData;
+            set
+            {
+                uint flag = 1u << (1 + base.OptionalFieldCount);
+                
+                _rWData = value;
+                EncodingMask = value is null
+                    ? EncodingMask | flag
+                    : EncodingMask & ~flag;
+            }
+        }
+        private int? _antenna;
+        public int? Antenna
+        {
+            get => _antenna;
+            set
+            {
+                uint flag = 1u << (2 + base.OptionalFieldCount);
+                
+                _antenna = value;
+                EncodingMask = value is null
+                    ? EncodingMask | flag
+                    : EncodingMask & ~flag;
+            }
+        }
+        private int? _currentPowerLevel;
+        public int? CurrentPowerLevel
+        {
+            get => _currentPowerLevel;
+            set
+            {
+                uint flag = 1u << (3 + base.OptionalFieldCount);
+                
+                _currentPowerLevel = value;
+                EncodingMask = value is null
+                    ? EncodingMask | flag
+                    : EncodingMask & ~flag;
+            }
+        }
+        private ushort? _pC;
+        public ushort? PC
+        {
+            get => _pC;
+            set
+            {
+                uint flag = 1u << (4 + base.OptionalFieldCount);
+                
+                _pC = value;
+                EncodingMask = value is null
+                    ? EncodingMask | flag
+                    : EncodingMask & ~flag;
+            }
+        }
+        private string _polarization;
+        public string Polarization
+        {
+            get => _polarization;
+            set
+            {
+                uint flag = 1u << (5 + base.OptionalFieldCount);
+                
+                _polarization = value;
+                EncodingMask = value is null
+                    ? EncodingMask | flag
+                    : EncodingMask & ~flag;
+            }
+        }
+        private int? _strength;
+        public int? Strength
+        {
+            get => _strength;
+            set
+            {
+                uint flag = 1u << (6 + base.OptionalFieldCount);
+                
+                _strength = value;
+                EncodingMask = value is null
+                    ? EncodingMask | flag
+                    : EncodingMask & ~flag;
+            }
+        }
         
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
@@ -182,13 +358,34 @@ namespace Ua.AutoID
             base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
-            encoder.WriteString("CodeTypeRWData", CodeTypeRWData);
-            encoder.WriteExtensionObject<ScanData>("RWData", RWData);
-            encoder.WriteInt32("Antenna", Antenna);
-            encoder.WriteInt32("CurrentPowerLevel", CurrentPowerLevel);
-            encoder.WriteUInt16("PC", PC);
-            encoder.WriteString("Polarization", Polarization);
-            encoder.WriteInt32("Strength", Strength);
+            if (CodeTypeRWData is {} opt0)
+            {
+                encoder.WriteString("CodeTypeRWData", opt0);
+            }
+            if (RWData is {} opt1)
+            {
+                encoder.WriteExtensionObject<ScanData>("RWData", opt1);
+            }
+            if (Antenna is {} opt2)
+            {
+                encoder.WriteInt32("Antenna", opt2);
+            }
+            if (CurrentPowerLevel is {} opt3)
+            {
+                encoder.WriteInt32("CurrentPowerLevel", opt3);
+            }
+            if (PC is {} opt4)
+            {
+                encoder.WriteUInt16("PC", opt4);
+            }
+            if (Polarization is {} opt5)
+            {
+                encoder.WriteString("Polarization", opt5);
+            }
+            if (Strength is {} opt6)
+            {
+                encoder.WriteInt32("Strength", opt6);
+            }
             
             encoder.PopNamespace();
         }
@@ -196,16 +393,74 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
+            int offset = base.OptionalFieldCount;
+            
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
-            CodeTypeRWData = decoder.ReadString("CodeTypeRWData");
-            RWData = decoder.ReadExtensionObject<ScanData>("RWData");
-            Antenna = decoder.ReadInt32("Antenna");
-            CurrentPowerLevel = decoder.ReadInt32("CurrentPowerLevel");
-            PC = decoder.ReadUInt16("PC");
-            Polarization = decoder.ReadString("Polarization");
-            Strength = decoder.ReadInt32("Strength");
+            if ((EncodingMask & (1u << (0 + offset))) != 0)
+            {
+                CodeTypeRWData = decoder.ReadString("CodeTypeRWData");
+            }
+            else
+            {
+                CodeTypeRWData = null;
+            }
+            
+            if ((EncodingMask & (1u << (1 + offset))) != 0)
+            {
+                RWData = decoder.ReadExtensionObject<ScanData>("RWData");
+            }
+            else
+            {
+                RWData = null;
+            }
+            
+            if ((EncodingMask & (1u << (2 + offset))) != 0)
+            {
+                Antenna = decoder.ReadInt32("Antenna");
+            }
+            else
+            {
+                Antenna = null;
+            }
+            
+            if ((EncodingMask & (1u << (3 + offset))) != 0)
+            {
+                CurrentPowerLevel = decoder.ReadInt32("CurrentPowerLevel");
+            }
+            else
+            {
+                CurrentPowerLevel = null;
+            }
+            
+            if ((EncodingMask & (1u << (4 + offset))) != 0)
+            {
+                PC = decoder.ReadUInt16("PC");
+            }
+            else
+            {
+                PC = null;
+            }
+            
+            if ((EncodingMask & (1u << (5 + offset))) != 0)
+            {
+                Polarization = decoder.ReadString("Polarization");
+            }
+            else
+            {
+                Polarization = null;
+            }
+            
+            if ((EncodingMask & (1u << (6 + offset))) != 0)
+            {
+                Strength = decoder.ReadInt32("Strength");
+            }
+            else
+            {
+                Strength = null;
+            }
+            
             
             decoder.PopNamespace();
         }
@@ -539,12 +794,28 @@ namespace Ua.AutoID
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5002")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5003")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3001")]
-    public abstract class ScanResult : Workstation.ServiceModel.Ua.Structure
+    public abstract class ScanResult : Workstation.ServiceModel.Ua.Structure,
+            IOptionalFields
     {
+        public virtual int OptionalFieldCount => 1;
+        public uint EncodingMask { get; protected set; }
         public string CodeType { get; set; }
         public ScanData ScanData { get; set; }
         public System.DateTime Timestamp { get; set; }
-        public Location Location { get; set; }
+        private Location _location;
+        public Location Location
+        {
+            get => _location;
+            set
+            {
+                uint flag = 1u << 0;
+                
+                _location = value;
+                EncodingMask = value is null
+                    ? EncodingMask | flag
+                    : EncodingMask & ~flag;
+            }
+        }
         
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
@@ -552,10 +823,14 @@ namespace Ua.AutoID
             base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
+            encoder.WriteUInt32("EncodingMask", EncodingMask);
             encoder.WriteString("CodeType", CodeType);
             encoder.WriteExtensionObject<ScanData>("ScanData", ScanData);
             encoder.WriteDateTime("Timestamp", Timestamp);
-            encoder.WriteExtensionObject<Location>("Location", Location);
+            if (Location is {} opt0)
+            {
+                encoder.WriteExtensionObject<Location>("Location", opt0);
+            }
             
             encoder.PopNamespace();
         }
@@ -563,13 +838,22 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
+            EncodingMask = decoder.ReadUInt32(null);
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
             CodeType = decoder.ReadString("CodeType");
             ScanData = decoder.ReadExtensionObject<ScanData>("ScanData");
             Timestamp = decoder.ReadDateTime("Timestamp");
-            Location = decoder.ReadExtensionObject<Location>("Location");
+            if ((EncodingMask & (1u << 0)) != 0)
+            {
+                Location = decoder.ReadExtensionObject<Location>("Location");
+            }
+            else
+            {
+                Location = null;
+            }
+            
             
             decoder.PopNamespace();
         }
@@ -584,11 +868,38 @@ namespace Ua.AutoID
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3002")]
     public class OcrScanResult : ScanResult
     {
+        public override int OptionalFieldCount => base.OptionalFieldCount + 2;
         public Workstation.ServiceModel.Ua.NodeId ImageId { get; set; }
         public byte Quality { get; set; }
         public Position Position { get; set; }
-        public string Font { get; set; }
-        public System.DateTime DecodingTime { get; set; }
+        private string _font;
+        public string Font
+        {
+            get => _font;
+            set
+            {
+                uint flag = 1u << (0 + base.OptionalFieldCount);
+                
+                _font = value;
+                EncodingMask = value is null
+                    ? EncodingMask | flag
+                    : EncodingMask & ~flag;
+            }
+        }
+        private System.DateTime? _decodingTime;
+        public System.DateTime? DecodingTime
+        {
+            get => _decodingTime;
+            set
+            {
+                uint flag = 1u << (1 + base.OptionalFieldCount);
+                
+                _decodingTime = value;
+                EncodingMask = value is null
+                    ? EncodingMask | flag
+                    : EncodingMask & ~flag;
+            }
+        }
         
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
@@ -599,8 +910,14 @@ namespace Ua.AutoID
             encoder.WriteNodeId("ImageId", ImageId);
             encoder.WriteByte("Quality", Quality);
             encoder.WriteExtensionObject<Position>("Position", Position);
-            encoder.WriteString("Font", Font);
-            encoder.WriteDateTime("DecodingTime", DecodingTime);
+            if (Font is {} opt0)
+            {
+                encoder.WriteString("Font", opt0);
+            }
+            if (DecodingTime is {} opt1)
+            {
+                encoder.WriteDateTime("DecodingTime", opt1);
+            }
             
             encoder.PopNamespace();
         }
@@ -608,14 +925,32 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
+            int offset = base.OptionalFieldCount;
+            
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
             ImageId = decoder.ReadNodeId("ImageId");
             Quality = decoder.ReadByte("Quality");
             Position = decoder.ReadExtensionObject<Position>("Position");
-            Font = decoder.ReadString("Font");
-            DecodingTime = decoder.ReadDateTime("DecodingTime");
+            if ((EncodingMask & (1u << (0 + offset))) != 0)
+            {
+                Font = decoder.ReadString("Font");
+            }
+            else
+            {
+                Font = null;
+            }
+            
+            if ((EncodingMask & (1u << (1 + offset))) != 0)
+            {
+                DecodingTime = decoder.ReadDateTime("DecodingTime");
+            }
+            else
+            {
+                DecodingTime = null;
+            }
+            
             
             decoder.PopNamespace();
         }
@@ -630,10 +965,63 @@ namespace Ua.AutoID
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3026")]
     public class OpticalScanResult : ScanResult
     {
-        public float Grade { get; set; }
-        public Position Position { get; set; }
-        public string Symbology { get; set; }
-        public Workstation.ServiceModel.Ua.NodeId ImageId { get; set; }
+        public override int OptionalFieldCount => base.OptionalFieldCount + 4;
+        private float? _grade;
+        public float? Grade
+        {
+            get => _grade;
+            set
+            {
+                uint flag = 1u << (0 + base.OptionalFieldCount);
+                
+                _grade = value;
+                EncodingMask = value is null
+                    ? EncodingMask | flag
+                    : EncodingMask & ~flag;
+            }
+        }
+        private Position _position;
+        public Position Position
+        {
+            get => _position;
+            set
+            {
+                uint flag = 1u << (1 + base.OptionalFieldCount);
+                
+                _position = value;
+                EncodingMask = value is null
+                    ? EncodingMask | flag
+                    : EncodingMask & ~flag;
+            }
+        }
+        private string _symbology;
+        public string Symbology
+        {
+            get => _symbology;
+            set
+            {
+                uint flag = 1u << (2 + base.OptionalFieldCount);
+                
+                _symbology = value;
+                EncodingMask = value is null
+                    ? EncodingMask | flag
+                    : EncodingMask & ~flag;
+            }
+        }
+        private Workstation.ServiceModel.Ua.NodeId _imageId;
+        public Workstation.ServiceModel.Ua.NodeId ImageId
+        {
+            get => _imageId;
+            set
+            {
+                uint flag = 1u << (3 + base.OptionalFieldCount);
+                
+                _imageId = value;
+                EncodingMask = value is null
+                    ? EncodingMask | flag
+                    : EncodingMask & ~flag;
+            }
+        }
         
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
@@ -641,10 +1029,22 @@ namespace Ua.AutoID
             base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
-            encoder.WriteFloat("Grade", Grade);
-            encoder.WriteExtensionObject<Position>("Position", Position);
-            encoder.WriteString("Symbology", Symbology);
-            encoder.WriteNodeId("ImageId", ImageId);
+            if (Grade is {} opt0)
+            {
+                encoder.WriteFloat("Grade", opt0);
+            }
+            if (Position is {} opt1)
+            {
+                encoder.WriteExtensionObject<Position>("Position", opt1);
+            }
+            if (Symbology is {} opt2)
+            {
+                encoder.WriteString("Symbology", opt2);
+            }
+            if (ImageId is {} opt3)
+            {
+                encoder.WriteNodeId("ImageId", opt3);
+            }
             
             encoder.PopNamespace();
         }
@@ -652,13 +1052,47 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
+            int offset = base.OptionalFieldCount;
+            
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
-            Grade = decoder.ReadFloat("Grade");
-            Position = decoder.ReadExtensionObject<Position>("Position");
-            Symbology = decoder.ReadString("Symbology");
-            ImageId = decoder.ReadNodeId("ImageId");
+            if ((EncodingMask & (1u << (0 + offset))) != 0)
+            {
+                Grade = decoder.ReadFloat("Grade");
+            }
+            else
+            {
+                Grade = null;
+            }
+            
+            if ((EncodingMask & (1u << (1 + offset))) != 0)
+            {
+                Position = decoder.ReadExtensionObject<Position>("Position");
+            }
+            else
+            {
+                Position = null;
+            }
+            
+            if ((EncodingMask & (1u << (2 + offset))) != 0)
+            {
+                Symbology = decoder.ReadString("Symbology");
+            }
+            else
+            {
+                Symbology = null;
+            }
+            
+            if ((EncodingMask & (1u << (3 + offset))) != 0)
+            {
+                ImageId = decoder.ReadNodeId("ImageId");
+            }
+            else
+            {
+                ImageId = null;
+            }
+            
             
             decoder.PopNamespace();
         }
@@ -806,12 +1240,28 @@ namespace Ua.AutoID
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5015")]
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5016")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3010")]
-    public class ScanSettings : Workstation.ServiceModel.Ua.Structure
+    public class ScanSettings : Workstation.ServiceModel.Ua.Structure,
+            IOptionalFields
     {
+        public virtual int OptionalFieldCount => 1;
+        public uint EncodingMask { get; protected set; }
         public double Duration { get; set; }
         public int Cycles { get; set; }
         public bool DataAvailable { get; set; }
-        public LocationTypeEnumeration LocationType { get; set; }
+        private LocationTypeEnumeration? _locationType;
+        public LocationTypeEnumeration? LocationType
+        {
+            get => _locationType;
+            set
+            {
+                uint flag = 1u << 0;
+                
+                _locationType = value;
+                EncodingMask = value is null
+                    ? EncodingMask | flag
+                    : EncodingMask & ~flag;
+            }
+        }
         
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
@@ -819,10 +1269,14 @@ namespace Ua.AutoID
             base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
+            encoder.WriteUInt32("EncodingMask", EncodingMask);
             encoder.WriteDouble("Duration", Duration);
             encoder.WriteInt32("Cycles", Cycles);
             encoder.WriteBoolean("DataAvailable", DataAvailable);
-            encoder.WriteEnumeration<LocationTypeEnumeration>("LocationType", LocationType);
+            if (LocationType is {} opt0)
+            {
+                encoder.WriteEnumeration<LocationTypeEnumeration>("LocationType", opt0);
+            }
             
             encoder.PopNamespace();
         }
@@ -830,13 +1284,22 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
+            EncodingMask = decoder.ReadUInt32(null);
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
             Duration = decoder.ReadDouble("Duration");
             Cycles = decoder.ReadInt32("Cycles");
             DataAvailable = decoder.ReadBoolean("DataAvailable");
-            LocationType = decoder.ReadEnumeration<LocationTypeEnumeration>("LocationType");
+            if ((EncodingMask & (1u << 0)) != 0)
+            {
+                LocationType = decoder.ReadEnumeration<LocationTypeEnumeration>("LocationType");
+            }
+            else
+            {
+                LocationType = null;
+            }
+            
             
             decoder.PopNamespace();
         }

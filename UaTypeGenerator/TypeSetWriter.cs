@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Org.BouncyCastle.Security;
+using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
@@ -22,6 +23,7 @@ namespace UaTypeGenerator
         public void Write(IndentedTextWriter writer)
         {
             WriteNamespaceBegin(writer);
+            WriteCommonTypes(writer);
             WriteDefinitions(writer);
             WriteNamespaceEnd(writer);
         }
@@ -37,6 +39,17 @@ namespace UaTypeGenerator
         {
             writer.Indent--;
             writer.WriteLine("}");
+        }
+
+        private void WriteCommonTypes(IndentedTextWriter writer)
+        {
+            writer.WriteLine("// Ideally this should go into Workstation.UaClient");
+            writer.WriteLine("public interface IOptionalFields");
+            writer.Begin("{");
+            writer.WriteLine("int OptionalFieldCount { get; }");
+            writer.WriteLine("uint EncodingMask { get; }");
+            writer.End("}");
+            writer.WriteLine();
         }
 
         private void WriteDefinitions(IndentedTextWriter writer)
@@ -66,31 +79,53 @@ namespace UaTypeGenerator
             WriteDocumentation(writer, c);
             WriteAttributes(writer, c);
 
+            var hasOptionalFields = c.OptionalPropertyCount != 0;
+            var parentHasOptionalFields = _typeSet.ParentHasOptionalProperties(c);
+
+            string optionalInterface = (hasOptionalFields && !parentHasOptionalFields) ? "," : "";
+
             if (c.ParentDataTypeId != null)
             {
                 isDerived = true;
                 var netType = _typeSet.GetNetType(c.ParentDataTypeId);
                 var absmodifier = c.IsAbstract ? "abstract " : "";
-                writer.WriteLine($"public {absmodifier}class {c.SymbolicName} : {netType.TypeName}");
+
+                writer.WriteLine($"public {absmodifier}class {c.SymbolicName} : {netType.TypeName}{optionalInterface}");
             }
             else
             {
-                writer.WriteLine($"public class {c.SymbolicName} : Workstation.ServiceModel.Ua.IEncodable");
+                writer.WriteLine($"public class {c.SymbolicName} : Workstation.ServiceModel.Ua.IEncodable{optionalInterface}");
+            }
+
+            if (hasOptionalFields && !parentHasOptionalFields)
+            {
+                writer.Indent++;
+                writer.Indent++;
+                writer.WriteLine("IOptionalFields");
+                writer.Indent--;
+                writer.Indent--;
             }
 
             writer.WriteLine("{");
             writer.Indent++;
 
+            if (hasOptionalFields)
+            {
+                WriteOptionalFieldsImplementation(writer, c, parentHasOptionalFields);
+            }
+
+            var optional = 0;
             foreach (var p in c.Properties)
             {
-                var netType = _typeSet.GetNetType(p.DataTypeId);
-                var r = p.Rank switch
+                if (p.IsOptional)
                 {
-                    2 => "[,]",
-                    1 => "[]",
-                    _ => ""
-                };
-                writer.WriteLine($"public {netType.TypeName}{r} {p.SymbolicName} {{ get; set; }}");
+                    WriteOptionalProperty(writer, p, optional, parentHasOptionalFields);
+                    optional++;
+                }
+                else
+                {
+                    WriteProperty(writer, p);
+                }
             }
 
             var modifier = isDerived ? "override" : "virtual";
@@ -109,12 +144,29 @@ namespace UaTypeGenerator
 
                 writer.WriteLine($"encoder.PushNamespace(\"{c.Namespace}\");");
                 writer.WriteLine();
+                if (hasOptionalFields && !parentHasOptionalFields)
+                {
+                    writer.WriteLine("encoder.WriteUInt32(\"EncodingMask\", EncodingMask);");
+                }
+
+                var index = 0;
                 foreach (var p in c.Properties)
                 {
                     var netType = _typeSet.GetNetType(p.DataTypeId);
                     var suffix = RenderMethodSuffix(netType, p.Rank);
 
-                    writer.WriteLine($"encoder.Write{suffix}(\"{p.SymbolicName}\", {p.SymbolicName});");
+                    if (p.IsOptional)
+                    {
+                        writer.WriteLine($"if ({p.SymbolicName} is {{}} opt{index})");
+                        writer.Begin("{");
+                        writer.WriteLine($"encoder.Write{suffix}(\"{p.SymbolicName}\", opt{index});");
+                        writer.End("}");
+                        index++;
+                    }
+                    else
+                    {
+                        writer.WriteLine($"encoder.Write{suffix}(\"{p.SymbolicName}\", {p.SymbolicName});");
+                    }
                 }
                 writer.WriteLine();
                 writer.WriteLine("encoder.PopNamespace();");
@@ -126,6 +178,15 @@ namespace UaTypeGenerator
                 writer.WriteLine($"public {modifier} void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)");
                 writer.WriteLine("{");
                 writer.Indent++;
+                if (hasOptionalFields && parentHasOptionalFields)
+                {
+                    writer.WriteLine("int offset = base.OptionalFieldCount;");
+                    writer.WriteLine();
+                }
+                if (hasOptionalFields && !parentHasOptionalFields)
+                {
+                    writer.WriteLine("EncodingMask = decoder.ReadUInt32(null);");
+                }
                 if (isDerived)
                 {
                     writer.WriteLine("base.Decode(decoder);");
@@ -133,12 +194,37 @@ namespace UaTypeGenerator
 
                 writer.WriteLine($"decoder.PushNamespace(\"{c.Namespace}\");");
                 writer.WriteLine();
+
+                index = 0;
                 foreach (var p in c.Properties)
                 {
                     var netType = _typeSet.GetNetType(p.DataTypeId);
                     var suffix = RenderMethodSuffix(netType, p.Rank);
 
-                    writer.WriteLine($"{p.SymbolicName} = decoder.Read{suffix}(\"{p.SymbolicName}\");");
+                    if (p.IsOptional)
+                    {
+                        if (parentHasOptionalFields)
+                        {
+                            writer.WriteLine($"if ((EncodingMask & (1u << ({index} + offset))) != 0)");
+                        }
+                        else
+                        {
+                            writer.WriteLine($"if ((EncodingMask & (1u << {index})) != 0)");
+                        }
+                        writer.Begin("{");
+                        writer.WriteLine($"{p.SymbolicName} = decoder.Read{suffix}(\"{p.SymbolicName}\");");
+                        writer.End("}");
+                        writer.WriteLine("else");
+                        writer.Begin("{");
+                        writer.WriteLine($"{p.SymbolicName} = null;");
+                        writer.End("}");
+                        writer.WriteLine();
+                        index++;
+                    }
+                    else
+                    {
+                        writer.WriteLine($"{p.SymbolicName} = decoder.Read{suffix}(\"{p.SymbolicName}\");");
+                    }
                 }
                 writer.WriteLine();
                 writer.WriteLine("decoder.PopNamespace();");
@@ -147,6 +233,73 @@ namespace UaTypeGenerator
             }
             writer.Indent--;
             writer.WriteLine("}");
+        }
+
+        private void WriteOptionalFieldsImplementation(IndentedTextWriter writer, ClassDefinition c, bool parentHasOptionalFields)
+        {
+            if (parentHasOptionalFields)
+            {
+                writer.WriteLine("public override int OptionalFieldCount => base.OptionalFieldCount + {0};", c.OptionalPropertyCount);
+            }
+            else
+            {
+                writer.WriteLine("public virtual int OptionalFieldCount => {0};", c.OptionalPropertyCount);
+                writer.WriteLine("public uint EncodingMask { get; protected set; }");
+            }
+        }
+
+        private void WriteProperty(IndentedTextWriter writer, ClassDefinition.Property p)
+        {
+            var netType = _typeSet.GetNetType(p.DataTypeId);
+            var r = p.Rank switch
+            {
+                2 => "[,]",
+                1 => "[]",
+                _ => ""
+            };
+            writer.WriteLine($"public {netType.TypeName}{r} {p.SymbolicName} {{ get; set; }}");
+        }
+        
+        private void WriteOptionalProperty(IndentedTextWriter writer, ClassDefinition.Property p, int index, bool parentHasOptionalFields)
+        {
+            var netType = _typeSet.GetNetType(p.DataTypeId);
+            var r = p.Rank switch
+            {
+                2 => "[,]",
+                1 => "[]",
+                _ => ""
+            };
+            var q = !netType.IsReference ? "?" : "";
+            var field = GetFieldName(p.SymbolicName);
+
+            writer.WriteLine($"private {netType.TypeName}{r}{q} {field};");
+            writer.WriteLine($"public {netType.TypeName}{r}{q} {p.SymbolicName}");
+            writer.Begin("{");
+            writer.WriteLine($"get => {field};");
+            writer.WriteLine("set");
+            writer.Begin("{");
+            if (parentHasOptionalFields)
+            {
+                writer.WriteLine($"uint flag = 1u << ({index} + base.OptionalFieldCount);");
+            }
+            else
+            {
+                writer.WriteLine($"uint flag = 1u << {index};");
+            }
+            writer.WriteLine();
+            writer.WriteLine($"{field} = value;");
+            writer.WriteLine("EncodingMask = value is null");
+            writer.Indent++;
+            writer.WriteLine("? EncodingMask | flag");
+            writer.WriteLine(": EncodingMask & ~flag;");
+            writer.Indent--;
+            writer.End("}");
+            writer.End("}");
+        }
+
+        private string GetFieldName(string name)
+        {
+            return "_" + Char.ToLowerInvariant(name[0]) + name.Substring(1);
         }
 
         private void WriteUnion(IndentedTextWriter writer, ClassDefinition c)

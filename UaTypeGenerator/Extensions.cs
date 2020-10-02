@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,5 +37,16 @@ namespace UaTypeGenerator
             return null;
         }
 
+        public static void Begin(this IndentedTextWriter writer, string opening)
+        {
+            writer.WriteLine(opening);
+            writer.Indent++;
+        }
+        
+        public static void End(this IndentedTextWriter writer, string closing)
+        {
+            writer.Indent--;
+            writer.WriteLine(closing);
+        }
     }
 }

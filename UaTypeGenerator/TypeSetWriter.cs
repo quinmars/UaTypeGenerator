@@ -31,14 +31,12 @@ namespace UaTypeGenerator
         private void WriteNamespaceBegin(IndentedTextWriter writer)
         {
             writer.WriteLine($"namespace {_netNamespace}");
-            writer.WriteLine("{");
-            writer.Indent++;
+            writer.Begin("{");
         }
         
         private void WriteNamespaceEnd(IndentedTextWriter writer)
         {
-            writer.Indent--;
-            writer.WriteLine("}");
+            writer.End("}");
         }
 
         private void WriteCommonTypes(IndentedTextWriter writer)
@@ -106,8 +104,7 @@ namespace UaTypeGenerator
                 writer.Indent--;
             }
 
-            writer.WriteLine("{");
-            writer.Indent++;
+            writer.Begin("{");
 
             if (hasOptionalFields)
             {
@@ -135,8 +132,7 @@ namespace UaTypeGenerator
                 writer.WriteLine();
                 WriteInheritDoc(writer);
                 writer.WriteLine($"public {modifier} void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)");
-                writer.WriteLine("{");
-                writer.Indent++;
+                writer.Begin("{");
                 if (isDerived)
                 {
                     writer.WriteLine("base.Encode(encoder);");
@@ -170,14 +166,12 @@ namespace UaTypeGenerator
                 }
                 writer.WriteLine();
                 writer.WriteLine("encoder.PopNamespace();");
-                writer.Indent--;
-                writer.WriteLine("}");
+                writer.End("}");
 
                 writer.WriteLine();
                 WriteInheritDoc(writer);
                 writer.WriteLine($"public {modifier} void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)");
-                writer.WriteLine("{");
-                writer.Indent++;
+                writer.Begin("{");
                 if (hasOptionalFields && parentHasOptionalFields)
                 {
                     writer.WriteLine("int offset = base.OptionalFieldCount;");
@@ -228,11 +222,9 @@ namespace UaTypeGenerator
                 }
                 writer.WriteLine();
                 writer.WriteLine("decoder.PopNamespace();");
-                writer.Indent--;
-                writer.WriteLine("}");
+                writer.End("}");
             }
-            writer.Indent--;
-            writer.WriteLine("}");
+            writer.End("}");
         }
 
         private void WriteOptionalFieldsImplementation(IndentedTextWriter writer, ClassDefinition c, bool parentHasOptionalFields)
@@ -309,12 +301,10 @@ namespace UaTypeGenerator
 
             writer.WriteLine($"public sealed class {c.SymbolicName} : Workstation.ServiceModel.Ua.Union");
 
-            writer.WriteLine("{");
-            writer.Indent++;
+            writer.Begin("{");
 
             writer.WriteLine("public enum UnionField");
-            writer.WriteLine("{");
-            writer.Indent++;
+            writer.Begin("{");
             writer.WriteLine("Null = 0,");
             var i = 1;
             foreach (var p in c.Properties)
@@ -322,8 +312,7 @@ namespace UaTypeGenerator
                 writer.WriteLine($"{p.SymbolicName} = {i},");
                 i++;
             }
-            writer.Indent--;
-            writer.WriteLine("}");
+            writer.End("}");
             writer.WriteLine();
             writer.WriteLine("private object _field;");
             writer.WriteLine();
@@ -340,32 +329,26 @@ namespace UaTypeGenerator
                 };
                 var type = $"{netType.TypeName}{r}";
                 writer.WriteLine($"public {type} {p.SymbolicName}");
-                writer.WriteLine("{");
-                writer.Indent++;
+                writer.Begin("{");
                 writer.WriteLine($"get => ({type})_field;");
                 writer.WriteLine("set");
-                writer.WriteLine("{");
-                writer.Indent++;
+                writer.Begin("{");
                 writer.WriteLine($"SwitchField = UnionField.{p.SymbolicName};");
                 writer.WriteLine($"_field = value;");
-                writer.Indent--;
-                writer.WriteLine("}");
-                writer.Indent--;
-                writer.WriteLine("}");
+                writer.End("}");
+                writer.End("}");
                 writer.WriteLine();
             }
 
             WriteInheritDoc(writer);
             writer.WriteLine($"public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)");
-            writer.WriteLine("{");
-            writer.Indent++;
+            writer.Begin("{");
 
             writer.WriteLine($"encoder.PushNamespace(\"{c.Namespace}\");");
             writer.WriteLine();
             writer.WriteLine($"encoder.WriteUInt32(\"SwitchField\", (uint)SwitchField);");
             writer.WriteLine($"switch (SwitchField)");
-            writer.WriteLine("{");
-            writer.Indent++;
+            writer.Begin("{");
             writer.WriteLine($"case UnionField.Null:");
             writer.Indent++;
             writer.WriteLine("break;");
@@ -386,25 +369,21 @@ namespace UaTypeGenerator
             writer.WriteLine("throw new Workstation.ServiceModel.Ua.ServiceResultException(Workstation.ServiceModel.Ua.StatusCodes.BadEncodingError);");
             writer.Indent--;
 
-            writer.Indent--;
-            writer.WriteLine("}");
+            writer.End("}");
 
             writer.WriteLine("encoder.PopNamespace();");
-            writer.Indent--;
-            writer.WriteLine("}");
+            writer.End("}");
 
             writer.WriteLine();
             WriteInheritDoc(writer);
             writer.WriteLine($"public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)");
-            writer.WriteLine("{");
-            writer.Indent++;
+            writer.Begin("{");
 
             writer.WriteLine($"decoder.PushNamespace(\"{c.Namespace}\");");
             writer.WriteLine();
             writer.WriteLine($"var switchField = (UnionField)decoder.ReadUInt32(null);");
             writer.WriteLine($"switch (switchField)");
-            writer.WriteLine("{");
-            writer.Indent++;
+            writer.Begin("{");
             writer.WriteLine("case UnionField.Null:");
             writer.Indent++;
             writer.WriteLine("_field = null;");
@@ -426,14 +405,11 @@ namespace UaTypeGenerator
             writer.WriteLine("throw new Workstation.ServiceModel.Ua.ServiceResultException(Workstation.ServiceModel.Ua.StatusCodes.BadEncodingError);");
             writer.Indent--;
 
-            writer.Indent--;
-            writer.WriteLine("}");
+            writer.End("}");
 
             writer.WriteLine("decoder.PopNamespace();");
-            writer.Indent--;
-            writer.WriteLine("}");
-            writer.Indent--;
-            writer.WriteLine("}");
+            writer.End("}");
+            writer.End("}");
         }
 
         private void WriteDocumentation(IndentedTextWriter writer, ClassDefinition c)
@@ -584,8 +560,7 @@ namespace UaTypeGenerator
             }
 
             writer.WriteLine($"public enum {e.SymbolicName}");
-            writer.WriteLine("{");
-            writer.Indent++;
+            writer.Begin("{");
 
             foreach (var item in e.Items)
             {
@@ -596,8 +571,7 @@ namespace UaTypeGenerator
                 writer.WriteLine($"{item.SymbolicName} = {item.Value},");
             }
 
-            writer.Indent--;
-            writer.WriteLine("}");
+            writer.End("}");
         }
     }
 }

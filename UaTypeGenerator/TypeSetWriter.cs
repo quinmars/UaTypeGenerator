@@ -22,20 +22,13 @@ namespace UaTypeGenerator
 
         public void Write(IndentedTextWriter writer)
         {
-            WriteNamespaceBegin(writer);
-            WriteCommonTypes(writer);
-            WriteDefinitions(writer);
-            WriteNamespaceEnd(writer);
-        }
-
-        private void WriteNamespaceBegin(IndentedTextWriter writer)
-        {
             writer.WriteLine($"namespace {_netNamespace}");
             writer.Begin("{");
-        }
-        
-        private void WriteNamespaceEnd(IndentedTextWriter writer)
-        {
+
+            WriteCommonTypes(writer);
+            
+            WriteDefinitions(writer);
+            
             writer.End("}");
         }
 
@@ -70,9 +63,12 @@ namespace UaTypeGenerator
             }
         }
 
+        /*
+         * Class and unions
+         */
         private void WriteClass(IndentedTextWriter writer, ClassDefinition c)
         {
-            bool isDerived = false;
+            bool isDerived = c.ParentDataTypeId != null;
 
             WriteDocumentation(writer, c);
             WriteAttributes(writer, c);
@@ -80,29 +76,7 @@ namespace UaTypeGenerator
             var hasOptionalFields = c.OptionalPropertyCount != 0;
             var parentHasOptionalFields = _typeSet.ParentHasOptionalProperties(c);
 
-            string optionalInterface = (hasOptionalFields && !parentHasOptionalFields) ? "," : "";
-
-            if (c.ParentDataTypeId != null)
-            {
-                isDerived = true;
-                var netType = _typeSet.GetNetType(c.ParentDataTypeId);
-                var absmodifier = c.IsAbstract ? "abstract " : "";
-
-                writer.WriteLine($"public {absmodifier}class {c.SymbolicName} : {netType.TypeName}{optionalInterface}");
-            }
-            else
-            {
-                writer.WriteLine($"public class {c.SymbolicName} : Workstation.ServiceModel.Ua.IEncodable{optionalInterface}");
-            }
-
-            if (hasOptionalFields && !parentHasOptionalFields)
-            {
-                writer.Indent++;
-                writer.Indent++;
-                writer.WriteLine("IOptionalFields");
-                writer.Indent--;
-                writer.Indent--;
-            }
+            WriteClassHeader(writer, c, parentHasOptionalFields);
 
             writer.Begin("{");
 
@@ -125,108 +99,184 @@ namespace UaTypeGenerator
                 }
             }
 
-            var modifier = isDerived ? "override" : "virtual";
-
             if (c.Properties.Any() || !isDerived)
             {
                 writer.WriteLine();
-                WriteInheritDoc(writer);
-                writer.WriteLine($"public {modifier} void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)");
-                writer.Begin("{");
-                if (isDerived)
-                {
-                    writer.WriteLine("base.Encode(encoder);");
-                }
-
-                writer.WriteLine($"encoder.PushNamespace(\"{c.Namespace}\");");
+                WriteEncodeMethod(writer, c, isDerived, parentHasOptionalFields);
                 writer.WriteLine();
-                if (hasOptionalFields && !parentHasOptionalFields)
-                {
-                    writer.WriteLine("encoder.WriteUInt32(\"EncodingMask\", EncodingMask);");
-                }
-
-                var index = 0;
-                foreach (var p in c.Properties)
-                {
-                    var netType = _typeSet.GetNetType(p.DataTypeId);
-                    var suffix = RenderMethodSuffix(netType, p.Rank);
-
-                    if (p.IsOptional)
-                    {
-                        writer.WriteLine($"if ({p.SymbolicName} is {{}} opt{index})");
-                        writer.Begin("{");
-                        writer.WriteLine($"encoder.Write{suffix}(\"{p.SymbolicName}\", opt{index});");
-                        writer.End("}");
-                        index++;
-                    }
-                    else
-                    {
-                        writer.WriteLine($"encoder.Write{suffix}(\"{p.SymbolicName}\", {p.SymbolicName});");
-                    }
-                }
-                writer.WriteLine();
-                writer.WriteLine("encoder.PopNamespace();");
-                writer.End("}");
-
-                writer.WriteLine();
-                WriteInheritDoc(writer);
-                writer.WriteLine($"public {modifier} void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)");
-                writer.Begin("{");
-                if (hasOptionalFields && parentHasOptionalFields)
-                {
-                    writer.WriteLine("int offset = base.OptionalFieldCount;");
-                    writer.WriteLine();
-                }
-                if (hasOptionalFields && !parentHasOptionalFields)
-                {
-                    writer.WriteLine("EncodingMask = decoder.ReadUInt32(null);");
-                }
-                if (isDerived)
-                {
-                    writer.WriteLine("base.Decode(decoder);");
-                }
-
-                writer.WriteLine($"decoder.PushNamespace(\"{c.Namespace}\");");
-                writer.WriteLine();
-
-                index = 0;
-                foreach (var p in c.Properties)
-                {
-                    var netType = _typeSet.GetNetType(p.DataTypeId);
-                    var suffix = RenderMethodSuffix(netType, p.Rank);
-
-                    if (p.IsOptional)
-                    {
-                        if (parentHasOptionalFields)
-                        {
-                            writer.WriteLine($"if ((EncodingMask & (1u << ({index} + offset))) != 0)");
-                        }
-                        else
-                        {
-                            writer.WriteLine($"if ((EncodingMask & (1u << {index})) != 0)");
-                        }
-                        writer.Begin("{");
-                        writer.WriteLine($"{p.SymbolicName} = decoder.Read{suffix}(\"{p.SymbolicName}\");");
-                        writer.End("}");
-                        writer.WriteLine("else");
-                        writer.Begin("{");
-                        writer.WriteLine($"{p.SymbolicName} = null;");
-                        writer.End("}");
-                        writer.WriteLine();
-                        index++;
-                    }
-                    else
-                    {
-                        writer.WriteLine($"{p.SymbolicName} = decoder.Read{suffix}(\"{p.SymbolicName}\");");
-                    }
-                }
-                writer.WriteLine();
-                writer.WriteLine("decoder.PopNamespace();");
-                writer.End("}");
+                WriteDecodeMethod(writer, c, isDerived, parentHasOptionalFields);
             }
             writer.End("}");
         }
 
+        private void WriteDocumentation(IndentedTextWriter writer, ClassDefinition c)
+        {
+            string summary = c.Description is null
+                ? $"Class for {c.SymbolicName}"
+                : c.Description;
+            writer.WriteLine("/// <summary>");
+            writer.WriteLine($"/// {summary}");
+            writer.WriteLine("/// </summary>");
+
+            if (!string.IsNullOrEmpty(c.Documentation))
+            {
+                writer.WriteLine($"/// <seealso href=\"{c.Documentation}\" />");
+            }
+        }
+        
+        private void WriteAttributes(IndentedTextWriter writer, ClassDefinition c)
+        {
+            if (_typeSet.TryGetExpandedNodeId(c.BinaryEncodingId, out ExpandedNodeId eId))
+            {
+                writer.WriteLine($"[Workstation.ServiceModel.Ua.BinaryEncodingId(\"{eId}\")]");
+            }
+
+            if (_typeSet.TryGetExpandedNodeId(c.XmlEncodingId, out eId))
+            {
+                writer.WriteLine($"[Workstation.ServiceModel.Ua.XmlEncodingId(\"{eId}\")]");
+            }
+            
+            if (_typeSet.TryGetExpandedNodeId(c.DataTypeId, out eId))
+            {
+                writer.WriteLine($"[Workstation.ServiceModel.Ua.DataTypeId(\"{eId}\")]");
+            }
+            else
+            {
+                throw new InvalidDataException($"No data type id for class {c.SymbolicName}.");
+            }
+        }
+
+        private void WriteClassHeader(IndentedTextWriter writer, ClassDefinition c, bool parentHasOptionalFields)
+        {
+            var hasOptionalFields = c.OptionalPropertyCount != 0;
+            string optionalInterface = (hasOptionalFields && !parentHasOptionalFields) ? "," : "";
+            if (c.ParentDataTypeId != null)
+            {
+                var netType = _typeSet.GetNetType(c.ParentDataTypeId);
+                var absmodifier = c.IsAbstract ? "abstract " : "";
+
+                writer.WriteLine($"public {absmodifier}class {c.SymbolicName} : {netType.TypeName}{optionalInterface}");
+            }
+            else
+            {
+                writer.WriteLine($"public class {c.SymbolicName} : Workstation.ServiceModel.Ua.IEncodable{optionalInterface}");
+            }
+            if (hasOptionalFields && !parentHasOptionalFields)
+            {
+                writer.Indent++;
+                writer.Indent++;
+                writer.WriteLine("IOptionalFields");
+                writer.Indent--;
+                writer.Indent--;
+            }
+        }
+        
+        private void WriteEncodeMethod(IndentedTextWriter writer, ClassDefinition c, bool isDerived, bool parentHasOptionalFields)
+        {
+            var hasOptionalFields = c.OptionalPropertyCount != 0;
+            var modifier = isDerived ? "override" : "virtual";
+
+            WriteInheritDoc(writer);
+            writer.WriteLine($"public {modifier} void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)");
+            writer.Begin("{");
+            if (isDerived)
+            {
+                writer.WriteLine("base.Encode(encoder);");
+            }
+
+            writer.WriteLine($"encoder.PushNamespace(\"{c.Namespace}\");");
+            writer.WriteLine();
+            if (hasOptionalFields && !parentHasOptionalFields)
+            {
+                writer.WriteLine("encoder.WriteUInt32(\"EncodingMask\", EncodingMask);");
+            }
+
+            var index = 0;
+            foreach (var p in c.Properties)
+            {
+                var netType = _typeSet.GetNetType(p.DataTypeId);
+                var suffix = RenderMethodSuffix(netType, p.Rank);
+
+                if (p.IsOptional)
+                {
+                    writer.WriteLine($"if ({p.SymbolicName} is {{}} opt{index})");
+                    writer.Begin("{");
+                    writer.WriteLine($"encoder.Write{suffix}(\"{p.SymbolicName}\", opt{index});");
+                    writer.End("}");
+                    index++;
+                }
+                else
+                {
+                    writer.WriteLine($"encoder.Write{suffix}(\"{p.SymbolicName}\", {p.SymbolicName});");
+                }
+            }
+            writer.WriteLine();
+            writer.WriteLine("encoder.PopNamespace();");
+            writer.End("}");
+        }
+
+        private void WriteDecodeMethod(IndentedTextWriter writer, ClassDefinition c, bool isDerived, bool parentHasOptionalFields)
+        {
+            var hasOptionalFields = c.OptionalPropertyCount != 0;
+            var modifier = isDerived ? "override" : "virtual";
+
+            WriteInheritDoc(writer);
+            writer.WriteLine($"public {modifier} void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)");
+            writer.Begin("{");
+            if (hasOptionalFields && parentHasOptionalFields)
+            {
+                writer.WriteLine("int offset = base.OptionalFieldCount;");
+                writer.WriteLine();
+            }
+            if (hasOptionalFields && !parentHasOptionalFields)
+            {
+                writer.WriteLine("EncodingMask = decoder.ReadUInt32(null);");
+            }
+            if (isDerived)
+            {
+                writer.WriteLine("base.Decode(decoder);");
+            }
+
+            writer.WriteLine($"decoder.PushNamespace(\"{c.Namespace}\");");
+            writer.WriteLine();
+
+            var index = 0;
+            foreach (var p in c.Properties)
+            {
+                var netType = _typeSet.GetNetType(p.DataTypeId);
+                var suffix = RenderMethodSuffix(netType, p.Rank);
+
+                if (p.IsOptional)
+                {
+                    if (parentHasOptionalFields)
+                    {
+                        writer.WriteLine($"if ((EncodingMask & (1u << ({index} + offset))) != 0)");
+                    }
+                    else
+                    {
+                        writer.WriteLine($"if ((EncodingMask & (1u << {index})) != 0)");
+                    }
+                    writer.Begin("{");
+                    writer.WriteLine($"{p.SymbolicName} = decoder.Read{suffix}(\"{p.SymbolicName}\");");
+                    writer.End("}");
+                    writer.WriteLine("else");
+                    writer.Begin("{");
+                    writer.WriteLine($"{p.SymbolicName} = null;");
+                    writer.End("}");
+                    writer.WriteLine();
+                    index++;
+                }
+                else
+                {
+                    writer.WriteLine($"{p.SymbolicName} = decoder.Read{suffix}(\"{p.SymbolicName}\");");
+                }
+            }
+            writer.WriteLine();
+            writer.WriteLine("decoder.PopNamespace();");
+            writer.End("}");
+        }
+
+        
         private void WriteOptionalFieldsImplementation(IndentedTextWriter writer, ClassDefinition c, bool parentHasOptionalFields)
         {
             if (parentHasOptionalFields)
@@ -251,7 +301,7 @@ namespace UaTypeGenerator
             };
             writer.WriteLine($"public {netType.TypeName}{r} {p.SymbolicName} {{ get; set; }}");
         }
-        
+
         private void WriteOptionalProperty(IndentedTextWriter writer, ClassDefinition.Property p, int index, bool parentHasOptionalFields)
         {
             var netType = _typeSet.GetNetType(p.DataTypeId);
@@ -289,20 +339,42 @@ namespace UaTypeGenerator
             writer.End("}");
         }
 
-        private string GetFieldName(string name)
-        {
-            return "_" + Char.ToLowerInvariant(name[0]) + name.Substring(1);
-        }
-
+        /*
+         * Union
+         */
         private void WriteUnion(IndentedTextWriter writer, ClassDefinition c)
         {
             WriteDocumentation(writer, c);
             WriteAttributes(writer, c);
 
-            writer.WriteLine($"public sealed class {c.SymbolicName} : Workstation.ServiceModel.Ua.Union");
+            WriteUnionHeader(writer, c);
 
             writer.Begin("{");
 
+            WriteUnionEnum(writer, c);
+            writer.WriteLine();
+            WriteUnionFields(writer);
+
+            writer.WriteLine();
+            foreach (var p in c.Properties)
+            {
+                WriteUnionProperty(writer, p);
+            }
+
+            WriteUnionEncodeMethod(writer, c);
+            writer.WriteLine();
+            WriteUnionDecodeMethod(writer, c);
+
+            writer.End("}");
+        }
+
+        private void WriteUnionHeader(IndentedTextWriter writer, ClassDefinition c)
+        {
+            writer.WriteLine($"public sealed class {c.SymbolicName} : Workstation.ServiceModel.Ua.Union");
+        }
+
+        private void WriteUnionEnum(IndentedTextWriter writer, ClassDefinition c)
+        {
             writer.WriteLine("public enum UnionField");
             writer.Begin("{");
             writer.WriteLine("Null = 0,");
@@ -313,33 +385,39 @@ namespace UaTypeGenerator
                 i++;
             }
             writer.End("}");
-            writer.WriteLine();
+        }
+
+        private void WriteUnionFields(IndentedTextWriter writer)
+        {
             writer.WriteLine("private object _field;");
             writer.WriteLine();
             writer.WriteLine("public UnionField SwitchField { get; private set; }");
-            writer.WriteLine();
-            foreach (var p in c.Properties)
-            {
-                var netType = _typeSet.GetNetType(p.DataTypeId);
-                var r = p.Rank switch
-                {
-                    2 => "[,]",
-                    1 => "[]",
-                    _ => ""
-                };
-                var type = $"{netType.TypeName}{r}";
-                writer.WriteLine($"public {type} {p.SymbolicName}");
-                writer.Begin("{");
-                writer.WriteLine($"get => ({type})_field;");
-                writer.WriteLine("set");
-                writer.Begin("{");
-                writer.WriteLine($"SwitchField = UnionField.{p.SymbolicName};");
-                writer.WriteLine($"_field = value;");
-                writer.End("}");
-                writer.End("}");
-                writer.WriteLine();
-            }
+        }
 
+        private void WriteUnionProperty(IndentedTextWriter writer, ClassDefinition.Property p)
+        {
+            var netType = _typeSet.GetNetType(p.DataTypeId);
+            var r = p.Rank switch
+            {
+                2 => "[,]",
+                1 => "[]",
+                _ => ""
+            };
+            var type = $"{netType.TypeName}{r}";
+            writer.WriteLine($"public {type} {p.SymbolicName}");
+            writer.Begin("{");
+            writer.WriteLine($"get => ({type})_field;");
+            writer.WriteLine("set");
+            writer.Begin("{");
+            writer.WriteLine($"SwitchField = UnionField.{p.SymbolicName};");
+            writer.WriteLine($"_field = value;");
+            writer.End("}");
+            writer.End("}");
+            writer.WriteLine();
+        }
+
+        private void WriteUnionEncodeMethod(IndentedTextWriter writer, ClassDefinition c)
+        {
             WriteInheritDoc(writer);
             writer.WriteLine($"public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)");
             writer.Begin("{");
@@ -373,8 +451,10 @@ namespace UaTypeGenerator
 
             writer.WriteLine("encoder.PopNamespace();");
             writer.End("}");
+        }
 
-            writer.WriteLine();
+        private void WriteUnionDecodeMethod(IndentedTextWriter writer, ClassDefinition c)
+        {
             WriteInheritDoc(writer);
             writer.WriteLine($"public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)");
             writer.Begin("{");
@@ -393,7 +473,7 @@ namespace UaTypeGenerator
             {
                 var netType = _typeSet.GetNetType(p.DataTypeId);
                 var suffix = RenderMethodSuffix(netType, p.Rank);
-                
+
                 writer.WriteLine($"case UnionField.{p.SymbolicName}:");
                 writer.Indent++;
                 writer.WriteLine($"{p.SymbolicName} = decoder.Read{suffix}(\"{p.SymbolicName}\");");
@@ -409,22 +489,37 @@ namespace UaTypeGenerator
 
             writer.WriteLine("decoder.PopNamespace();");
             writer.End("}");
-            writer.End("}");
         }
 
-        private void WriteDocumentation(IndentedTextWriter writer, ClassDefinition c)
+        /*
+         * Enumeration
+         */
+        private void WriteEnumeration(IndentedTextWriter writer, EnumDefinition e)
         {
-            string summary = c.Description is null
-                ? $"Class for {c.SymbolicName}"
-                : c.Description;
-            writer.WriteLine("/// <summary>");
-            writer.WriteLine($"/// {summary}");
-            writer.WriteLine("/// </summary>");
+            WriteDocumentation(writer, e);
 
-            if (!string.IsNullOrEmpty(c.Documentation))
+            if (_typeSet.TryGetExpandedNodeId(e.DataTypeId, out var eId))
             {
-                writer.WriteLine($"/// <seealso href=\"{c.Documentation}\" />");
+                writer.WriteLine($"[Workstation.ServiceModel.Ua.DataTypeId(\"{eId}\")]");
             }
+            else
+            {
+                throw new InvalidDataException($"No data type id for enum {e.SymbolicName}.");
+            }
+
+            writer.WriteLine($"public enum {e.SymbolicName}");
+            writer.Begin("{");
+
+            foreach (var item in e.Items)
+            {
+                if (item.Description != null)
+                {
+                    writer.WriteLine($"/// <summary>{item.Description}</summary>");
+                }
+                writer.WriteLine($"{item.SymbolicName} = {item.Value},");
+            }
+
+            writer.End("}");
         }
         
         private void WriteDocumentation(IndentedTextWriter writer, EnumDefinition e)
@@ -442,33 +537,9 @@ namespace UaTypeGenerator
             }
         }
 
-        private void WriteInheritDoc(IndentedTextWriter writer)
-        {
-            writer.WriteLine("/// <<inheritdoc/>");
-        }
-
-        private void WriteAttributes(IndentedTextWriter writer, ClassDefinition c)
-        {
-            if (_typeSet.TryGetExpandedNodeId(c.BinaryEncodingId, out ExpandedNodeId eId))
-            {
-                writer.WriteLine($"[Workstation.ServiceModel.Ua.BinaryEncodingId(\"{eId}\")]");
-            }
-
-            if (_typeSet.TryGetExpandedNodeId(c.XmlEncodingId, out eId))
-            {
-                writer.WriteLine($"[Workstation.ServiceModel.Ua.XmlEncodingId(\"{eId}\")]");
-            }
-            
-            if (_typeSet.TryGetExpandedNodeId(c.DataTypeId, out eId))
-            {
-                writer.WriteLine($"[Workstation.ServiceModel.Ua.DataTypeId(\"{eId}\")]");
-            }
-            else
-            {
-                throw new InvalidDataException($"No data type id for class {c.SymbolicName}.");
-            }
-        }
-
+        /*
+         * Helper
+         */
         private string RenderMethodSuffix(TypeInfo netType, int rank)
         {
             if (rank > 0)
@@ -545,33 +616,15 @@ namespace UaTypeGenerator
 
             return $"Encodable{array}<{netType.TypeName}>";
         }
-
-        private void WriteEnumeration(IndentedTextWriter writer, EnumDefinition e)
+        
+        private string GetFieldName(string name)
         {
-            WriteDocumentation(writer, e);
-
-            if (_typeSet.TryGetExpandedNodeId(e.DataTypeId, out var eId))
-            {
-                writer.WriteLine($"[Workstation.ServiceModel.Ua.DataTypeId(\"{eId}\")]");
-            }
-            else
-            {
-                throw new InvalidDataException($"No data type id for enum {e.SymbolicName}.");
-            }
-
-            writer.WriteLine($"public enum {e.SymbolicName}");
-            writer.Begin("{");
-
-            foreach (var item in e.Items)
-            {
-                if (item.Description != null)
-                {
-                    writer.WriteLine($"/// <summary>{item.Description}</summary>");
-                }
-                writer.WriteLine($"{item.SymbolicName} = {item.Value},");
-            }
-
-            writer.End("}");
+            return "_" + Char.ToLowerInvariant(name[0]) + name.Substring(1);
+        }
+        
+        private void WriteInheritDoc(IndentedTextWriter writer)
+        {
+            writer.WriteLine("/// <<inheritdoc/>");
         }
     }
 }

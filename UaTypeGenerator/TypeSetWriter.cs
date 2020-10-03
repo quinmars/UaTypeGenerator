@@ -259,10 +259,6 @@ namespace UaTypeGenerator
                 writer.WriteLine("int offset = base.OptionalFieldCount;");
                 writer.WriteLine();
             }
-            if (hasOptionalFields && !parentHasOptionalFields)
-            {
-                writer.WriteLine("EncodingMask = decoder.ReadUInt32(null);");
-            }
             if (isDerived)
             {
                 writer.WriteLine("base.Decode(decoder);");
@@ -270,6 +266,19 @@ namespace UaTypeGenerator
 
             writer.WriteLine($"decoder.PushNamespace(\"{c.Namespace}\");");
             writer.WriteLine();
+            if (hasOptionalFields)
+            {
+                if (!parentHasOptionalFields)
+                {
+                    writer.WriteLine("var encodingMask = decoder.ReadUInt32(null);");
+                    writer.WriteLine("EncodingMask = encodingMask;");
+                }
+                else
+                {
+                    writer.WriteLine("var encodingMask = EncodingMask;");
+                }
+                writer.WriteLine();
+            }
 
             var index = 0;
             foreach (var p in c.Properties)
@@ -281,11 +290,11 @@ namespace UaTypeGenerator
                 {
                     if (parentHasOptionalFields)
                     {
-                        writer.WriteLine($"{p.SymbolicName} = (EncodingMask & (1u << ({index} + offset))) != 0");
+                        writer.WriteLine($"{p.SymbolicName} = (encodingMask & (1u << ({index} + offset))) != 0");
                     }
                     else
                     {
-                        writer.WriteLine($"{p.SymbolicName} = (EncodingMask & (1u << {index})) != 0");
+                        writer.WriteLine($"{p.SymbolicName} = (encodingMask & (1u << {index})) != 0");
                     }
                     writer.Indent++;
                     writer.WriteLine($"? decoder.Read{suffix}(\"{p.SymbolicName}\")");
@@ -363,8 +372,8 @@ namespace UaTypeGenerator
             writer.WriteLine($"{field} = value;");
             writer.WriteLine("EncodingMask = value is null");
             writer.Indent++;
-            writer.WriteLine("? EncodingMask | flag");
-            writer.WriteLine(": EncodingMask & ~flag;");
+            writer.WriteLine("? EncodingMask & ~flag");
+            writer.WriteLine(": EncodingMask | flag;");
             writer.Indent--;
             writer.End("}");
             writer.End("}");

@@ -212,8 +212,8 @@ namespace Ua.AutoID
                 
                 _codeType = value;
                 EncodingMask = value is null
-                    ? EncodingMask | flag
-                    : EncodingMask & ~flag;
+                    ? EncodingMask & ~flag
+                    : EncodingMask | flag;
             }
         }
         private ScanData _identifier;
@@ -226,8 +226,8 @@ namespace Ua.AutoID
                 
                 _identifier = value;
                 EncodingMask = value is null
-                    ? EncodingMask | flag
-                    : EncodingMask & ~flag;
+                    ? EncodingMask & ~flag
+                    : EncodingMask | flag;
             }
         }
         private System.DateTime? _timestamp;
@@ -240,8 +240,8 @@ namespace Ua.AutoID
                 
                 _timestamp = value;
                 EncodingMask = value is null
-                    ? EncodingMask | flag
-                    : EncodingMask & ~flag;
+                    ? EncodingMask & ~flag
+                    : EncodingMask | flag;
             }
         }
         
@@ -271,17 +271,19 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            EncodingMask = decoder.ReadUInt32(null);
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
-            CodeType = (EncodingMask & (1u << 0)) != 0
+            var encodingMask = decoder.ReadUInt32(null);
+            EncodingMask = encodingMask;
+            
+            CodeType = (encodingMask & (1u << 0)) != 0
                 ? decoder.ReadString("CodeType")
                 : default;
-            Identifier = (EncodingMask & (1u << 1)) != 0
+            Identifier = (encodingMask & (1u << 1)) != 0
                 ? decoder.ReadExtensionObject<ScanData>("Identifier")
                 : default;
-            Timestamp = (EncodingMask & (1u << 2)) != 0
+            Timestamp = (encodingMask & (1u << 2)) != 0
                 ? decoder.ReadDateTime("Timestamp")
                 : default;
             
@@ -311,8 +313,8 @@ namespace Ua.AutoID
                 
                 _codeTypeRWData = value;
                 EncodingMask = value is null
-                    ? EncodingMask | flag
-                    : EncodingMask & ~flag;
+                    ? EncodingMask & ~flag
+                    : EncodingMask | flag;
             }
         }
         private ScanData _rWData;
@@ -325,8 +327,8 @@ namespace Ua.AutoID
                 
                 _rWData = value;
                 EncodingMask = value is null
-                    ? EncodingMask | flag
-                    : EncodingMask & ~flag;
+                    ? EncodingMask & ~flag
+                    : EncodingMask | flag;
             }
         }
         private int? _antenna;
@@ -339,8 +341,8 @@ namespace Ua.AutoID
                 
                 _antenna = value;
                 EncodingMask = value is null
-                    ? EncodingMask | flag
-                    : EncodingMask & ~flag;
+                    ? EncodingMask & ~flag
+                    : EncodingMask | flag;
             }
         }
         private int? _currentPowerLevel;
@@ -353,8 +355,8 @@ namespace Ua.AutoID
                 
                 _currentPowerLevel = value;
                 EncodingMask = value is null
-                    ? EncodingMask | flag
-                    : EncodingMask & ~flag;
+                    ? EncodingMask & ~flag
+                    : EncodingMask | flag;
             }
         }
         private ushort? _pC;
@@ -367,8 +369,8 @@ namespace Ua.AutoID
                 
                 _pC = value;
                 EncodingMask = value is null
-                    ? EncodingMask | flag
-                    : EncodingMask & ~flag;
+                    ? EncodingMask & ~flag
+                    : EncodingMask | flag;
             }
         }
         private string _polarization;
@@ -381,8 +383,8 @@ namespace Ua.AutoID
                 
                 _polarization = value;
                 EncodingMask = value is null
-                    ? EncodingMask | flag
-                    : EncodingMask & ~flag;
+                    ? EncodingMask & ~flag
+                    : EncodingMask | flag;
             }
         }
         private int? _strength;
@@ -395,8 +397,8 @@ namespace Ua.AutoID
                 
                 _strength = value;
                 EncodingMask = value is null
-                    ? EncodingMask | flag
-                    : EncodingMask & ~flag;
+                    ? EncodingMask & ~flag
+                    : EncodingMask | flag;
             }
         }
         
@@ -446,25 +448,27 @@ namespace Ua.AutoID
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
-            CodeTypeRWData = (EncodingMask & (1u << (0 + offset))) != 0
+            var encodingMask = EncodingMask;
+            
+            CodeTypeRWData = (encodingMask & (1u << (0 + offset))) != 0
                 ? decoder.ReadString("CodeTypeRWData")
                 : default;
-            RWData = (EncodingMask & (1u << (1 + offset))) != 0
+            RWData = (encodingMask & (1u << (1 + offset))) != 0
                 ? decoder.ReadExtensionObject<ScanData>("RWData")
                 : default;
-            Antenna = (EncodingMask & (1u << (2 + offset))) != 0
+            Antenna = (encodingMask & (1u << (2 + offset))) != 0
                 ? decoder.ReadInt32("Antenna")
                 : default;
-            CurrentPowerLevel = (EncodingMask & (1u << (3 + offset))) != 0
+            CurrentPowerLevel = (encodingMask & (1u << (3 + offset))) != 0
                 ? decoder.ReadInt32("CurrentPowerLevel")
                 : default;
-            PC = (EncodingMask & (1u << (4 + offset))) != 0
+            PC = (encodingMask & (1u << (4 + offset))) != 0
                 ? decoder.ReadUInt16("PC")
                 : default;
-            Polarization = (EncodingMask & (1u << (5 + offset))) != 0
+            Polarization = (encodingMask & (1u << (5 + offset))) != 0
                 ? decoder.ReadString("Polarization")
                 : default;
-            Strength = (EncodingMask & (1u << (6 + offset))) != 0
+            Strength = (encodingMask & (1u << (6 + offset))) != 0
                 ? decoder.ReadInt32("Strength")
                 : default;
             
@@ -821,8 +825,8 @@ namespace Ua.AutoID
                 
                 _location = value;
                 EncodingMask = value is null
-                    ? EncodingMask | flag
-                    : EncodingMask & ~flag;
+                    ? EncodingMask & ~flag
+                    : EncodingMask | flag;
             }
         }
         
@@ -847,14 +851,16 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            EncodingMask = decoder.ReadUInt32(null);
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
+            var encodingMask = decoder.ReadUInt32(null);
+            EncodingMask = encodingMask;
             
             CodeType = decoder.ReadString("CodeType");
             ScanData = decoder.ReadExtensionObject<ScanData>("ScanData");
             Timestamp = decoder.ReadDateTime("Timestamp");
-            Location = (EncodingMask & (1u << 0)) != 0
+            Location = (encodingMask & (1u << 0)) != 0
                 ? decoder.ReadExtensionObject<Location>("Location")
                 : default;
             
@@ -887,8 +893,8 @@ namespace Ua.AutoID
                 
                 _font = value;
                 EncodingMask = value is null
-                    ? EncodingMask | flag
-                    : EncodingMask & ~flag;
+                    ? EncodingMask & ~flag
+                    : EncodingMask | flag;
             }
         }
         private System.DateTime? _decodingTime;
@@ -901,8 +907,8 @@ namespace Ua.AutoID
                 
                 _decodingTime = value;
                 EncodingMask = value is null
-                    ? EncodingMask | flag
-                    : EncodingMask & ~flag;
+                    ? EncodingMask & ~flag
+                    : EncodingMask | flag;
             }
         }
         
@@ -935,13 +941,15 @@ namespace Ua.AutoID
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
+            var encodingMask = EncodingMask;
+            
             ImageId = decoder.ReadNodeId("ImageId");
             Quality = decoder.ReadByte("Quality");
             Position = decoder.ReadExtensionObject<Position>("Position");
-            Font = (EncodingMask & (1u << (0 + offset))) != 0
+            Font = (encodingMask & (1u << (0 + offset))) != 0
                 ? decoder.ReadString("Font")
                 : default;
-            DecodingTime = (EncodingMask & (1u << (1 + offset))) != 0
+            DecodingTime = (encodingMask & (1u << (1 + offset))) != 0
                 ? decoder.ReadDateTime("DecodingTime")
                 : default;
             
@@ -971,8 +979,8 @@ namespace Ua.AutoID
                 
                 _grade = value;
                 EncodingMask = value is null
-                    ? EncodingMask | flag
-                    : EncodingMask & ~flag;
+                    ? EncodingMask & ~flag
+                    : EncodingMask | flag;
             }
         }
         private Position _position;
@@ -985,8 +993,8 @@ namespace Ua.AutoID
                 
                 _position = value;
                 EncodingMask = value is null
-                    ? EncodingMask | flag
-                    : EncodingMask & ~flag;
+                    ? EncodingMask & ~flag
+                    : EncodingMask | flag;
             }
         }
         private string _symbology;
@@ -999,8 +1007,8 @@ namespace Ua.AutoID
                 
                 _symbology = value;
                 EncodingMask = value is null
-                    ? EncodingMask | flag
-                    : EncodingMask & ~flag;
+                    ? EncodingMask & ~flag
+                    : EncodingMask | flag;
             }
         }
         private Workstation.ServiceModel.Ua.NodeId _imageId;
@@ -1013,8 +1021,8 @@ namespace Ua.AutoID
                 
                 _imageId = value;
                 EncodingMask = value is null
-                    ? EncodingMask | flag
-                    : EncodingMask & ~flag;
+                    ? EncodingMask & ~flag
+                    : EncodingMask | flag;
             }
         }
         
@@ -1052,16 +1060,18 @@ namespace Ua.AutoID
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
-            Grade = (EncodingMask & (1u << (0 + offset))) != 0
+            var encodingMask = EncodingMask;
+            
+            Grade = (encodingMask & (1u << (0 + offset))) != 0
                 ? decoder.ReadFloat("Grade")
                 : default;
-            Position = (EncodingMask & (1u << (1 + offset))) != 0
+            Position = (encodingMask & (1u << (1 + offset))) != 0
                 ? decoder.ReadExtensionObject<Position>("Position")
                 : default;
-            Symbology = (EncodingMask & (1u << (2 + offset))) != 0
+            Symbology = (encodingMask & (1u << (2 + offset))) != 0
                 ? decoder.ReadString("Symbology")
                 : default;
-            ImageId = (EncodingMask & (1u << (3 + offset))) != 0
+            ImageId = (encodingMask & (1u << (3 + offset))) != 0
                 ? decoder.ReadNodeId("ImageId")
                 : default;
             
@@ -1232,8 +1242,8 @@ namespace Ua.AutoID
                 
                 _locationType = value;
                 EncodingMask = value is null
-                    ? EncodingMask | flag
-                    : EncodingMask & ~flag;
+                    ? EncodingMask & ~flag
+                    : EncodingMask | flag;
             }
         }
         
@@ -1258,14 +1268,16 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            EncodingMask = decoder.ReadUInt32(null);
             base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
+            
+            var encodingMask = decoder.ReadUInt32(null);
+            EncodingMask = encodingMask;
             
             Duration = decoder.ReadDouble("Duration");
             Cycles = decoder.ReadInt32("Cycles");
             DataAvailable = decoder.ReadBoolean("DataAvailable");
-            LocationType = (EncodingMask & (1u << 0)) != 0
+            LocationType = (encodingMask & (1u << 0)) != 0
                 ? decoder.ReadEnumeration<LocationTypeEnumeration>("LocationType")
                 : default;
             

@@ -48,5 +48,36 @@ namespace UaTypeGenerator
             writer.Indent--;
             writer.WriteLine(closing);
         }
+
+        public static string[] WordWrap(this string text, int width)
+        {
+            text = text.Replace('\n', ' ').Replace('\r', ' ').Replace("  ", " ");
+            var list = new List<string>();
+
+            int index;
+            while (true)
+            {
+                if (text.Length < width)
+                {
+                    list.Add(text.Trim());
+                    break;
+                }
+
+                index = text.LastIndexOf(' ', width);
+
+                if (index >= 0)
+                {
+                    list.Add(text.Substring(0, index).Trim());
+                    text = text.Substring(index);
+                }
+                else
+                {
+                    list.Add(text.Trim());
+                    break;
+                }
+            }
+
+            return list.ToArray();
+        }
     }
 }

@@ -112,11 +112,11 @@ namespace UaTypeGenerator
                 {
                     WriteProperty(writer, p);
                 }
+                writer.WriteLine();
             }
 
             if (c.Properties.Any() || !isDerived)
             {
-                writer.WriteLine();
                 WriteEncodeMethod(writer, c, isDerived, parentHasOptionalFields);
                 writer.WriteLine();
                 WriteDecodeMethod(writer, c, isDerived, parentHasOptionalFields);
@@ -130,7 +130,7 @@ namespace UaTypeGenerator
                 ? $"Class for the {c.SymbolicName} data type."
                 : c.Description;
             writer.WriteLine("/// <summary>");
-            foreach (var line in summary.WordWrap(76))
+            foreach (var line in summary.WordWrap(76 - 4 * writer.Indent))
             {
                 writer.WriteLine($"/// {line}");
             }
@@ -142,7 +142,7 @@ namespace UaTypeGenerator
                     + "only one of its properties is accessible. Which properity is accessible can "
                     + "be tested by the <see cref=\"SwitchField\" /> property.";
                 writer.WriteLine("/// <remarks>");
-                foreach (var line in remarks.WordWrap(76))
+                foreach (var line in remarks.WordWrap(76 - 4 * writer.Indent))
                 {
                     writer.WriteLine($"/// {line}");
                 }
@@ -332,6 +332,7 @@ namespace UaTypeGenerator
 
         private void WriteProperty(IndentedTextWriter writer, ClassDefinition.Property p)
         {
+            WritePropertyDocumentation(writer, p, isUnion: false);
             var netType = _typeSet.GetNetType(p.DataTypeId);
             var r = p.Rank switch
             {
@@ -344,6 +345,7 @@ namespace UaTypeGenerator
 
         private void WriteOptionalProperty(IndentedTextWriter writer, ClassDefinition.Property p, int index, bool parentHasOptionalFields)
         {
+            WritePropertyDocumentation(writer, p, isUnion: false);
             var netType = _typeSet.GetNetType(p.DataTypeId);
             var r = p.Rank switch
             {
@@ -378,6 +380,39 @@ namespace UaTypeGenerator
             writer.End("}");
             writer.End("}");
         }
+        
+        private void WritePropertyDocumentation(IndentedTextWriter writer, ClassDefinition.Property p, bool isUnion)
+        {
+            string summary = p.Description is null
+                ? $"The {p.SymbolicName} property."
+                : p.Description;
+            writer.WriteLine("/// <summary>");
+            foreach (var line in summary.WordWrap(76 - 4 * writer.Indent))
+            {
+                writer.WriteLine($"/// {line}");
+            }
+            writer.WriteLine("/// </summary>");
+
+            if (isUnion)
+            {
+                var remarks = "The value of this property may only be retrieved, when "
+                    + $"the <see cref=\"SwitchField\" /> property.is set to <c>UnionField.{p.SymbolicName}</c>. "
+                    + "Otherwise the behavior is undefined and can lead to invalid data or "
+                    + "an <see cref=\"System.InvalidCastException\" /> exeption.";
+                writer.WriteLine("/// <remarks>");
+                foreach (var line in remarks.WordWrap(76 - 4 * writer.Indent))
+                {
+                    writer.WriteLine($"/// {line}");
+                }
+                writer.WriteLine("/// </remarks>");
+            }
+
+            if (!string.IsNullOrEmpty(p.Documentation))
+            {
+                writer.WriteLine($"/// <seealso href=\"{p.Documentation}\" />");
+            }
+
+        }
 
         /*
          * Union
@@ -399,6 +434,7 @@ namespace UaTypeGenerator
             foreach (var p in c.Properties)
             {
                 WriteUnionProperty(writer, p);
+                writer.WriteLine();
             }
 
             WriteUnionEncodeMethod(writer, c);
@@ -436,6 +472,7 @@ namespace UaTypeGenerator
 
         private void WriteUnionProperty(IndentedTextWriter writer, ClassDefinition.Property p)
         {
+            WritePropertyDocumentation(writer, p, isUnion: true);
             var netType = _typeSet.GetNetType(p.DataTypeId);
             var r = p.Rank switch
             {
@@ -453,7 +490,6 @@ namespace UaTypeGenerator
             writer.WriteLine($"_field = value;");
             writer.End("}");
             writer.End("}");
-            writer.WriteLine();
         }
 
         private void WriteUnionEncodeMethod(IndentedTextWriter writer, ClassDefinition c)
@@ -555,7 +591,7 @@ namespace UaTypeGenerator
                 if (item.Description != null)
                 {
                     writer.WriteLine("/// <summary>");
-                    foreach (var line in item.Description.WordWrap(68))
+                    foreach (var line in item.Description.WordWrap(76 - 4 * writer.Indent))
                     {
                         writer.WriteLine($"/// {line}");
                     }
@@ -573,7 +609,7 @@ namespace UaTypeGenerator
                 ? $"The {e.SymbolicName} enumeration."
                 : e.Description;
             writer.WriteLine("/// <summary>");
-            foreach (var line in summary.WordWrap(76))
+            foreach (var line in summary.WordWrap(76 - 4 * writer.Indent))
             {
                 writer.WriteLine($"/// {line}");
             }

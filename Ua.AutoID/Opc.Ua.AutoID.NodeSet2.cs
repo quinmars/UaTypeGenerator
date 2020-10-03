@@ -202,6 +202,9 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public uint EncodingMask { get; protected set; }
         
+        /// <summary>
+        /// Defines the format of Identifier as string.
+        /// </summary>
         private string _codeType;
         public string CodeType
         {
@@ -216,6 +219,11 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        
+        /// <summary>
+        /// The AutoID Identifier (e.g. a code or a transponder) which was
+        /// accessed by a command.
+        /// </summary>
         private ScanData _identifier;
         public ScanData Identifier
         {
@@ -230,6 +238,10 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        
+        /// <summary>
+        /// The point of time the AutoID Identifier was accessed by the command.
+        /// </summary>
         private System.DateTime? _timestamp;
         public System.DateTime? Timestamp
         {
@@ -303,6 +315,9 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override int OptionalFieldCount => base.OptionalFieldCount + 7;
         
+        /// <summary>
+        /// Defines the format of RWData as string.
+        /// </summary>
         private string _codeTypeRWData;
         public string CodeTypeRWData
         {
@@ -317,6 +332,11 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        
+        /// <summary>
+        /// The user data which was written to / was read from the Rfid
+        /// Transponder by the command.
+        /// </summary>
         private ScanData _rWData;
         public ScanData RWData
         {
@@ -331,6 +351,10 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        
+        /// <summary>
+        /// The antenna by which the transponder was accessed by the command.
+        /// </summary>
         private int? _antenna;
         public int? Antenna
         {
@@ -345,6 +369,11 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        
+        /// <summary>
+        /// The power level with which the transponder was accessed by the
+        /// command.
+        /// </summary>
         private int? _currentPowerLevel;
         public int? CurrentPowerLevel
         {
@@ -359,6 +388,11 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        
+        /// <summary>
+        /// The Protocol Control Word of the transponder accessed by the
+        /// command.
+        /// </summary>
         private ushort? _pC;
         public ushort? PC
         {
@@ -373,6 +407,11 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        
+        /// <summary>
+        /// The polarization with which the last transponder was accessed by the
+        /// command.
+        /// </summary>
         private string _polarization;
         public string Polarization
         {
@@ -387,6 +426,11 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        
+        /// <summary>
+        /// The Rssi value with which the transponder was accessed by the
+        /// command.
+        /// </summary>
         private int? _strength;
         public int? Strength
         {
@@ -485,7 +529,14 @@ namespace Ua.AutoID
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3011")]
     public class AntennaNameIdPair : Workstation.ServiceModel.Ua.Structure
     {
+        /// <summary>
+        /// The AntennaId property.
+        /// </summary>
         public int AntennaId { get; set; }
+        
+        /// <summary>
+        /// The AntennaName property.
+        /// </summary>
         public string AntennaName { get; set; }
         
         /// <<inheritdoc/>
@@ -521,16 +572,59 @@ namespace Ua.AutoID
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3023")]
     public class DhcpGeoConfCoordinate : Workstation.ServiceModel.Ua.Structure
     {
+        /// <summary>
+        /// The LaRes property.
+        /// </summary>
         public byte LaRes { get; set; }
+        
+        /// <summary>
+        /// The LatitudeInteger property.
+        /// </summary>
         public short LatitudeInteger { get; set; }
+        
+        /// <summary>
+        /// The LatitudeFraction property.
+        /// </summary>
         public int LatitudeFraction { get; set; }
+        
+        /// <summary>
+        /// The LoRes property.
+        /// </summary>
         public byte LoRes { get; set; }
+        
+        /// <summary>
+        /// The LongitudeInteger property.
+        /// </summary>
         public short LongitudeInteger { get; set; }
+        
+        /// <summary>
+        /// The LongitudeFraction property.
+        /// </summary>
         public int LongitudeFraction { get; set; }
+        
+        /// <summary>
+        /// The AT property.
+        /// </summary>
         public byte AT { get; set; }
+        
+        /// <summary>
+        /// The AltRes property.
+        /// </summary>
         public byte AltRes { get; set; }
+        
+        /// <summary>
+        /// The AltitudeInteger property.
+        /// </summary>
         public int AltitudeInteger { get; set; }
+        
+        /// <summary>
+        /// The AltitudeFraction property.
+        /// </summary>
         public short AltitudeFraction { get; set; }
+        
+        /// <summary>
+        /// The Datum property.
+        /// </summary>
         public byte Datum { get; set; }
         
         /// <<inheritdoc/>
@@ -585,11 +679,34 @@ namespace Ua.AutoID
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3019")]
     public class LocalCoordinate : Workstation.ServiceModel.Ua.Structure
     {
+        /// <summary>
+        /// The X property.
+        /// </summary>
         public double X { get; set; }
+        
+        /// <summary>
+        /// The Y property.
+        /// </summary>
         public double Y { get; set; }
+        
+        /// <summary>
+        /// The Z property.
+        /// </summary>
         public double Z { get; set; }
+        
+        /// <summary>
+        /// Optional
+        /// </summary>
         public System.DateTime Timestamp { get; set; }
+        
+        /// <summary>
+        /// Optional
+        /// </summary>
         public double DilutionOfPrecision { get; set; }
+        
+        /// <summary>
+        /// Optional
+        /// </summary>
         public int UsefulPrecision { get; set; }
         
         /// <<inheritdoc/>
@@ -634,10 +751,29 @@ namespace Ua.AutoID
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3004")]
     public class Position : Workstation.ServiceModel.Ua.Structure
     {
+        /// <summary>
+        /// The PositionX property.
+        /// </summary>
         public int PositionX { get; set; }
+        
+        /// <summary>
+        /// The PositionY property.
+        /// </summary>
         public int PositionY { get; set; }
+        
+        /// <summary>
+        /// The SizeX property.
+        /// </summary>
         public int SizeX { get; set; }
+        
+        /// <summary>
+        /// The SizeY property.
+        /// </summary>
         public int SizeY { get; set; }
+        
+        /// <summary>
+        /// The Rotation property.
+        /// </summary>
         public int Rotation { get; set; }
         
         /// <<inheritdoc/>
@@ -680,9 +816,26 @@ namespace Ua.AutoID
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3006")]
     public class RfidSighting : Workstation.ServiceModel.Ua.Structure
     {
+        /// <summary>
+        /// Returns the number of the antenna which detects the RFID tag first.
+        /// </summary>
         public int Antenna { get; set; }
+        
+        /// <summary>
+        /// Returns the signal strength (RSSI) of the transponder. Higher values
+        /// indicate a better strength.
+        /// </summary>
         public int Strength { get; set; }
+        
+        /// <summary>
+        /// Timestamp in UtcTime
+        /// </summary>
         public System.DateTime Timestamp { get; set; }
+        
+        /// <summary>
+        /// Returns the current power level (unit according to parameter
+        /// settings).
+        /// </summary>
         public int CurrentPowerLevel { get; set; }
         
         /// <<inheritdoc/>
@@ -723,8 +876,19 @@ namespace Ua.AutoID
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3029")]
     public class Rotation : Workstation.ServiceModel.Ua.Structure
     {
+        /// <summary>
+        /// The Yaw property.
+        /// </summary>
         public double Yaw { get; set; }
+        
+        /// <summary>
+        /// The Pitch property.
+        /// </summary>
         public double Pitch { get; set; }
+        
+        /// <summary>
+        /// The Roll property.
+        /// </summary>
         public double Roll { get; set; }
         
         /// <<inheritdoc/>
@@ -763,9 +927,24 @@ namespace Ua.AutoID
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3024")]
     public class ScanDataEpc : Workstation.ServiceModel.Ua.Structure
     {
+        /// <summary>
+        /// The PC property.
+        /// </summary>
         public ushort PC { get; set; }
+        
+        /// <summary>
+        /// The UId property.
+        /// </summary>
         public byte[] UId { get; set; }
+        
+        /// <summary>
+        /// The XPC_W1 property.
+        /// </summary>
         public ushort XPC_W1 { get; set; }
+        
+        /// <summary>
+        /// The XPC_W2 property.
+        /// </summary>
         public ushort XPC_W2 { get; set; }
         
         /// <<inheritdoc/>
@@ -812,9 +991,25 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public uint EncodingMask { get; protected set; }
         
+        /// <summary>
+        /// Defines the format of the ScanData as string.
+        /// </summary>
         public string CodeType { get; set; }
+        
+        /// <summary>
+        /// Holds the information about the detected objects e.g. the detected
+        /// transponders.
+        /// </summary>
         public ScanData ScanData { get; set; }
+        
+        /// <summary>
+        /// Timestamp of the ScanResult creation.
+        /// </summary>
         public System.DateTime Timestamp { get; set; }
+        
+        /// <summary>
+        /// Returns the location of the object detection.
+        /// </summary>
         private Location _location;
         public Location Location
         {
@@ -880,9 +1075,25 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override int OptionalFieldCount => base.OptionalFieldCount + 2;
         
+        /// <summary>
+        /// NodeId of the original scan image file object used for this scan
+        /// result.
+        /// </summary>
         public Workstation.ServiceModel.Ua.NodeId ImageId { get; set; }
+        
+        /// <summary>
+        /// Returns the probability of correct decoding.
+        /// </summary>
         public byte Quality { get; set; }
+        
+        /// <summary>
+        /// Returns the position of the text within the image.
+        /// </summary>
         public Position Position { get; set; }
+        
+        /// <summary>
+        /// Returns the font name used for decoding.
+        /// </summary>
         private string _font;
         public string Font
         {
@@ -897,6 +1108,10 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        
+        /// <summary>
+        /// Returns the required decoding time.
+        /// </summary>
         private System.DateTime? _decodingTime;
         public System.DateTime? DecodingTime
         {
@@ -969,6 +1184,9 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override int OptionalFieldCount => base.OptionalFieldCount + 4;
         
+        /// <summary>
+        /// Returns the quality of the 1D/2D code.
+        /// </summary>
         private float? _grade;
         public float? Grade
         {
@@ -983,6 +1201,10 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        
+        /// <summary>
+        /// Returns the position of the text within the image.
+        /// </summary>
         private Position _position;
         public Position Position
         {
@@ -997,6 +1219,10 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        
+        /// <summary>
+        /// The Symbology property.
+        /// </summary>
         private string _symbology;
         public string Symbology
         {
@@ -1011,6 +1237,10 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        
+        /// <summary>
+        /// The ImageId property.
+        /// </summary>
         private Workstation.ServiceModel.Ua.NodeId _imageId;
         public Workstation.ServiceModel.Ua.NodeId ImageId
         {
@@ -1088,14 +1318,49 @@ namespace Ua.AutoID
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3030")]
     public class OpticalVerifierScanResult : OpticalScanResult
     {
+        /// <summary>
+        /// The IsoGrade property.
+        /// </summary>
         public string IsoGrade { get; set; }
+        
+        /// <summary>
+        /// The RMin property.
+        /// </summary>
         public short RMin { get; set; }
+        
+        /// <summary>
+        /// The SymbolContrast property.
+        /// </summary>
         public short SymbolContrast { get; set; }
+        
+        /// <summary>
+        /// The ECMin property.
+        /// </summary>
         public short ECMin { get; set; }
+        
+        /// <summary>
+        /// The Modulation property.
+        /// </summary>
         public short Modulation { get; set; }
+        
+        /// <summary>
+        /// The Defects property.
+        /// </summary>
         public short Defects { get; set; }
+        
+        /// <summary>
+        /// The Decodability property.
+        /// </summary>
         public short Decodability { get; set; }
+        
+        /// <summary>
+        /// The Decode_ property.
+        /// </summary>
         public short Decode_ { get; set; }
+        
+        /// <summary>
+        /// The PrintGain property.
+        /// </summary>
         public short PrintGain { get; set; }
         
         /// <<inheritdoc/>
@@ -1146,6 +1411,10 @@ namespace Ua.AutoID
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3007")]
     public class RfidScanResult : ScanResult
     {
+        /// <summary>
+        /// Returns additional information on the RFID-related properties of the
+        /// scan event.
+        /// </summary>
         public RfidSighting[] Sighting { get; set; }
         
         /// <<inheritdoc/>
@@ -1180,9 +1449,24 @@ namespace Ua.AutoID
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3028")]
     public class RtlsLocationResult : ScanResult
     {
+        /// <summary>
+        /// The Speed property.
+        /// </summary>
         public double Speed { get; set; }
+        
+        /// <summary>
+        /// The Heading property.
+        /// </summary>
         public double Heading { get; set; }
+        
+        /// <summary>
+        /// The Rotation property.
+        /// </summary>
         public Rotation Rotation { get; set; }
+        
+        /// <summary>
+        /// The ReceiveTime property.
+        /// </summary>
         public System.DateTime ReceiveTime { get; set; }
         
         /// <<inheritdoc/>
@@ -1229,9 +1513,24 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public uint EncodingMask { get; protected set; }
         
+        /// <summary>
+        /// The Duration property.
+        /// </summary>
         public double Duration { get; set; }
+        
+        /// <summary>
+        /// The Cycles property.
+        /// </summary>
         public int Cycles { get; set; }
+        
+        /// <summary>
+        /// The DataAvailable property.
+        /// </summary>
         public bool DataAvailable { get; set; }
+        
+        /// <summary>
+        /// The LocationType property.
+        /// </summary>
         private LocationTypeEnumeration? _locationType;
         public LocationTypeEnumeration? LocationType
         {
@@ -1289,9 +1588,9 @@ namespace Ua.AutoID
     /// Class for the Location data type.
     /// </summary>
     /// <remarks>
-    /// This class is an implementation of the union type. That means only one of
-    /// its properties is accessible. Which properity is accessible can be tested
-    /// by the <see cref="SwitchField" /> property.
+    /// This class is an implementation of the union type. That means only one
+    /// of its properties is accessible. Which properity is accessible can be
+    /// tested by the <see cref="SwitchField" /> property.
     /// </remarks>
     /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.4.1" />
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5013")]
@@ -1312,6 +1611,15 @@ namespace Ua.AutoID
         
         public UnionField SwitchField { get; private set; }
         
+        /// <summary>
+        /// The NMEA property.
+        /// </summary>
+        /// <remarks>
+        /// The value of this property may only be retrieved, when the <see
+        /// cref="SwitchField" /> property.is set to <c>UnionField.NMEA</c>.
+        /// Otherwise the behavior is undefined and can lead to invalid data or
+        /// an <see cref="System.InvalidCastException" /> exeption.
+        /// </remarks>
         public string NMEA
         {
             get => (string)_field;
@@ -1322,6 +1630,15 @@ namespace Ua.AutoID
             }
         }
         
+        /// <summary>
+        /// The Local property.
+        /// </summary>
+        /// <remarks>
+        /// The value of this property may only be retrieved, when the <see
+        /// cref="SwitchField" /> property.is set to <c>UnionField.Local</c>.
+        /// Otherwise the behavior is undefined and can lead to invalid data or
+        /// an <see cref="System.InvalidCastException" /> exeption.
+        /// </remarks>
         public LocalCoordinate Local
         {
             get => (LocalCoordinate)_field;
@@ -1332,6 +1649,15 @@ namespace Ua.AutoID
             }
         }
         
+        /// <summary>
+        /// The WGS84 property.
+        /// </summary>
+        /// <remarks>
+        /// The value of this property may only be retrieved, when the <see
+        /// cref="SwitchField" /> property.is set to <c>UnionField.WGS84</c>.
+        /// Otherwise the behavior is undefined and can lead to invalid data or
+        /// an <see cref="System.InvalidCastException" /> exeption.
+        /// </remarks>
         public WGS84Coordinate WGS84
         {
             get => (WGS84Coordinate)_field;
@@ -1342,6 +1668,15 @@ namespace Ua.AutoID
             }
         }
         
+        /// <summary>
+        /// The Name property.
+        /// </summary>
+        /// <remarks>
+        /// The value of this property may only be retrieved, when the <see
+        /// cref="SwitchField" /> property.is set to <c>UnionField.Name</c>.
+        /// Otherwise the behavior is undefined and can lead to invalid data or
+        /// an <see cref="System.InvalidCastException" /> exeption.
+        /// </remarks>
         public string Name
         {
             get => (string)_field;
@@ -1414,9 +1749,9 @@ namespace Ua.AutoID
     /// Class for the ScanData data type.
     /// </summary>
     /// <remarks>
-    /// This class is an implementation of the union type. That means only one of
-    /// its properties is accessible. Which properity is accessible can be tested
-    /// by the <see cref="SwitchField" /> property.
+    /// This class is an implementation of the union type. That means only one
+    /// of its properties is accessible. Which properity is accessible can be
+    /// tested by the <see cref="SwitchField" /> property.
     /// </remarks>
     /// <seealso href="https://reference.opcfoundation.org/v104/AutoID/v101/docs/9.4.2" />
     [Workstation.ServiceModel.Ua.BinaryEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5030")]
@@ -1437,6 +1772,16 @@ namespace Ua.AutoID
         
         public UnionField SwitchField { get; private set; }
         
+        /// <summary>
+        /// The ByteString property.
+        /// </summary>
+        /// <remarks>
+        /// The value of this property may only be retrieved, when the <see
+        /// cref="SwitchField" /> property.is set to
+        /// <c>UnionField.ByteString</c>. Otherwise the behavior is undefined
+        /// and can lead to invalid data or an <see
+        /// cref="System.InvalidCastException" /> exeption.
+        /// </remarks>
         public byte[] ByteString
         {
             get => (byte[])_field;
@@ -1447,6 +1792,15 @@ namespace Ua.AutoID
             }
         }
         
+        /// <summary>
+        /// The String property.
+        /// </summary>
+        /// <remarks>
+        /// The value of this property may only be retrieved, when the <see
+        /// cref="SwitchField" /> property.is set to <c>UnionField.String</c>.
+        /// Otherwise the behavior is undefined and can lead to invalid data or
+        /// an <see cref="System.InvalidCastException" /> exeption.
+        /// </remarks>
         public string String
         {
             get => (string)_field;
@@ -1457,6 +1811,15 @@ namespace Ua.AutoID
             }
         }
         
+        /// <summary>
+        /// The Epc property.
+        /// </summary>
+        /// <remarks>
+        /// The value of this property may only be retrieved, when the <see
+        /// cref="SwitchField" /> property.is set to <c>UnionField.Epc</c>.
+        /// Otherwise the behavior is undefined and can lead to invalid data or
+        /// an <see cref="System.InvalidCastException" /> exeption.
+        /// </remarks>
         public ScanDataEpc Epc
         {
             get => (ScanDataEpc)_field;
@@ -1467,6 +1830,15 @@ namespace Ua.AutoID
             }
         }
         
+        /// <summary>
+        /// The Custom property.
+        /// </summary>
+        /// <remarks>
+        /// The value of this property may only be retrieved, when the <see
+        /// cref="SwitchField" /> property.is set to <c>UnionField.Custom</c>.
+        /// Otherwise the behavior is undefined and can lead to invalid data or
+        /// an <see cref="System.InvalidCastException" /> exeption.
+        /// </remarks>
         public Workstation.ServiceModel.Ua.Variant Custom
         {
             get => (Workstation.ServiceModel.Ua.Variant)_field;
@@ -1544,14 +1916,49 @@ namespace Ua.AutoID
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3027")]
     public class WGS84Coordinate : Workstation.ServiceModel.Ua.Structure
     {
+        /// <summary>
+        /// The N_S_Hemisphere property.
+        /// </summary>
         public string N_S_Hemisphere { get; set; }
+        
+        /// <summary>
+        /// The Latitude property.
+        /// </summary>
         public double Latitude { get; set; }
+        
+        /// <summary>
+        /// The E_W_Hemisphere property.
+        /// </summary>
         public string E_W_Hemisphere { get; set; }
+        
+        /// <summary>
+        /// The Longitude property.
+        /// </summary>
         public double Longitude { get; set; }
+        
+        /// <summary>
+        /// The Altitude property.
+        /// </summary>
         public double Altitude { get; set; }
+        
+        /// <summary>
+        /// The Timestamp property.
+        /// </summary>
         public System.DateTime Timestamp { get; set; }
+        
+        /// <summary>
+        /// The DilutionOfPrecision property.
+        /// </summary>
         public double DilutionOfPrecision { get; set; }
+        
+        /// <summary>
+        /// The UsefulPrecisionLatLon property.
+        /// </summary>
         public int UsefulPrecisionLatLon { get; set; }
+        
+        /// <summary>
+        /// The UsefulPrecisionAlt property.
+        /// </summary>
         public int UsefulPrecisionAlt { get; set; }
         
         /// <<inheritdoc/>

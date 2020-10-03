@@ -67,7 +67,14 @@ namespace Ua.DI
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/DI/;i=15888")]
     public class TransferResultErrorDataType : FetchResultDataType
     {
+        /// <summary>
+        /// The Status property.
+        /// </summary>
         public int Status { get; set; }
+        
+        /// <summary>
+        /// The Diagnostics property.
+        /// </summary>
         public Workstation.ServiceModel.Ua.DiagnosticInfo Diagnostics { get; set; }
         
         /// <<inheritdoc/>
@@ -104,8 +111,19 @@ namespace Ua.DI
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/DI/;i=15889")]
     public class TransferResultDataDataType : FetchResultDataType
     {
+        /// <summary>
+        /// The SequenceNumber property.
+        /// </summary>
         public int SequenceNumber { get; set; }
+        
+        /// <summary>
+        /// The EndOfResults property.
+        /// </summary>
         public bool EndOfResults { get; set; }
+        
+        /// <summary>
+        /// The ParameterDefs property.
+        /// </summary>
         public ParameterResultDataType[] ParameterDefs { get; set; }
         
         /// <<inheritdoc/>
@@ -144,8 +162,19 @@ namespace Ua.DI
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/DI/;i=6525")]
     public class ParameterResultDataType : Workstation.ServiceModel.Ua.Structure
     {
+        /// <summary>
+        /// The NodePath property.
+        /// </summary>
         public Workstation.ServiceModel.Ua.QualifiedName[] NodePath { get; set; }
+        
+        /// <summary>
+        /// The StatusCode property.
+        /// </summary>
         public Workstation.ServiceModel.Ua.StatusCode StatusCode { get; set; }
+        
+        /// <summary>
+        /// The Diagnostics property.
+        /// </summary>
         public Workstation.ServiceModel.Ua.DiagnosticInfo Diagnostics { get; set; }
         
         /// <<inheritdoc/>

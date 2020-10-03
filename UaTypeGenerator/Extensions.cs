@@ -57,7 +57,7 @@ namespace UaTypeGenerator
             int index;
             while (true)
             {
-                if (text.Length < width)
+                if (text.Length <= width)
                 {
                     list.Add(text.Trim());
                     break;

@@ -259,11 +259,6 @@ namespace UaTypeGenerator
                 return false;
             }
 
-            if (nodeId.Identifier is (uint)3031)
-            {
-                Console.WriteLine();
-            }
-
             switch ((uint)curId.Identifier)
             {
                 case 290: // Duration

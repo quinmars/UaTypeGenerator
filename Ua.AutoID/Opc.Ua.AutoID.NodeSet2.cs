@@ -205,7 +205,6 @@ namespace Ua.AutoID
         /// <summary>
         /// Defines the format of Identifier as string.
         /// </summary>
-        private string _codeType;
         public string CodeType
         {
             get => _codeType;
@@ -219,12 +218,12 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        private string _codeType;
         
         /// <summary>
         /// The AutoID Identifier (e.g. a code or a transponder) which was
         /// accessed by a command.
         /// </summary>
-        private ScanData _identifier;
         public ScanData Identifier
         {
             get => _identifier;
@@ -238,11 +237,11 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        private ScanData _identifier;
         
         /// <summary>
         /// The point of time the AutoID Identifier was accessed by the command.
         /// </summary>
-        private System.DateTime? _timestamp;
         public System.DateTime? Timestamp
         {
             get => _timestamp;
@@ -256,6 +255,7 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        private System.DateTime? _timestamp;
         
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
@@ -318,7 +318,6 @@ namespace Ua.AutoID
         /// <summary>
         /// Defines the format of RWData as string.
         /// </summary>
-        private string _codeTypeRWData;
         public string CodeTypeRWData
         {
             get => _codeTypeRWData;
@@ -332,12 +331,12 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        private string _codeTypeRWData;
         
         /// <summary>
         /// The user data which was written to / was read from the Rfid
         /// Transponder by the command.
         /// </summary>
-        private ScanData _rWData;
         public ScanData RWData
         {
             get => _rWData;
@@ -351,11 +350,11 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        private ScanData _rWData;
         
         /// <summary>
         /// The antenna by which the transponder was accessed by the command.
         /// </summary>
-        private int? _antenna;
         public int? Antenna
         {
             get => _antenna;
@@ -369,12 +368,12 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        private int? _antenna;
         
         /// <summary>
         /// The power level with which the transponder was accessed by the
         /// command.
         /// </summary>
-        private int? _currentPowerLevel;
         public int? CurrentPowerLevel
         {
             get => _currentPowerLevel;
@@ -388,12 +387,12 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        private int? _currentPowerLevel;
         
         /// <summary>
         /// The Protocol Control Word of the transponder accessed by the
         /// command.
         /// </summary>
-        private ushort? _pC;
         public ushort? PC
         {
             get => _pC;
@@ -407,12 +406,12 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        private ushort? _pC;
         
         /// <summary>
         /// The polarization with which the last transponder was accessed by the
         /// command.
         /// </summary>
-        private string _polarization;
         public string Polarization
         {
             get => _polarization;
@@ -426,12 +425,12 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        private string _polarization;
         
         /// <summary>
         /// The Rssi value with which the transponder was accessed by the
         /// command.
         /// </summary>
-        private int? _strength;
         public int? Strength
         {
             get => _strength;
@@ -445,6 +444,7 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        private int? _strength;
         
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
@@ -1010,7 +1010,6 @@ namespace Ua.AutoID
         /// <summary>
         /// Returns the location of the object detection.
         /// </summary>
-        private Location _location;
         public Location Location
         {
             get => _location;
@@ -1024,6 +1023,7 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        private Location _location;
         
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
@@ -1094,7 +1094,6 @@ namespace Ua.AutoID
         /// <summary>
         /// Returns the font name used for decoding.
         /// </summary>
-        private string _font;
         public string Font
         {
             get => _font;
@@ -1108,11 +1107,11 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        private string _font;
         
         /// <summary>
         /// Returns the required decoding time.
         /// </summary>
-        private System.DateTime? _decodingTime;
         public System.DateTime? DecodingTime
         {
             get => _decodingTime;
@@ -1126,6 +1125,7 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        private System.DateTime? _decodingTime;
         
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
@@ -1187,7 +1187,6 @@ namespace Ua.AutoID
         /// <summary>
         /// Returns the quality of the 1D/2D code.
         /// </summary>
-        private float? _grade;
         public float? Grade
         {
             get => _grade;
@@ -1201,11 +1200,11 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        private float? _grade;
         
         /// <summary>
         /// Returns the position of the text within the image.
         /// </summary>
-        private Position _position;
         public Position Position
         {
             get => _position;
@@ -1219,11 +1218,11 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        private Position _position;
         
         /// <summary>
         /// The Symbology property.
         /// </summary>
-        private string _symbology;
         public string Symbology
         {
             get => _symbology;
@@ -1237,11 +1236,11 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        private string _symbology;
         
         /// <summary>
         /// The ImageId property.
         /// </summary>
-        private Workstation.ServiceModel.Ua.NodeId _imageId;
         public Workstation.ServiceModel.Ua.NodeId ImageId
         {
             get => _imageId;
@@ -1255,6 +1254,7 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        private Workstation.ServiceModel.Ua.NodeId _imageId;
         
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
@@ -1531,7 +1531,6 @@ namespace Ua.AutoID
         /// <summary>
         /// The LocationType property.
         /// </summary>
-        private LocationTypeEnumeration? _locationType;
         public LocationTypeEnumeration? LocationType
         {
             get => _locationType;
@@ -1545,6 +1544,7 @@ namespace Ua.AutoID
                     : EncodingMask | flag;
             }
         }
+        private LocationTypeEnumeration? _locationType;
         
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)

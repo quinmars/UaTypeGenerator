@@ -356,7 +356,6 @@ namespace UaTypeGenerator
             var q = !netType.IsReference ? "?" : "";
             var field = GetFieldName(p.SymbolicName);
 
-            writer.WriteLine($"private {netType.TypeName}{r}{q} {field};");
             writer.WriteLine($"public {netType.TypeName}{r}{q} {p.SymbolicName}");
             writer.Begin("{");
             writer.WriteLine($"get => {field};");
@@ -379,6 +378,7 @@ namespace UaTypeGenerator
             writer.Indent--;
             writer.End("}");
             writer.End("}");
+            writer.WriteLine($"private {netType.TypeName}{r}{q} {field};");
         }
         
         private void WritePropertyDocumentation(IndentedTextWriter writer, ClassDefinition.Property p, bool isUnion)

@@ -353,7 +353,7 @@ namespace UaTypeGenerator
                 1 => "[]",
                 _ => ""
             };
-            var q = !netType.IsReference ? "?" : "";
+            var q = (netType.IsReference || p.Rank > 0) ? "" : "?";
             var field = GetFieldName(p.SymbolicName);
 
             writer.WriteLine($"public {netType.TypeName}{r}{q} {p.SymbolicName}");

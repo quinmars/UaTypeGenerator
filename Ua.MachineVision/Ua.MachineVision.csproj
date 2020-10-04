@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Workstation.UaClient" Version="2.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Opc.Ua.MachineVision.NodeSet2.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Opc.Ua.MachineVision.NodeSet2.xml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="cd $(ProjectDir) &amp;&amp; dotnet ..\UaTypeGenerator\bin\Debug\netcoreapp2.0\UaTypeGenerator.dll -f Opc.Ua.MachineVision.NodeSet2.xml -n Ua.MachineVision" />
+  </Target>
+
+</Project>

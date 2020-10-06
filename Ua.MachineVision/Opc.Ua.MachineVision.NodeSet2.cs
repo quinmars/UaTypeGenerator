@@ -224,16 +224,16 @@ namespace Ua.MachineVision
             Id = decoder.ReadString("Id");
             Version = (encodingMask & (1u << 0)) != 0
                 ? decoder.ReadString("Version")
-                : default;
+                : default(string);
             Hash = (encodingMask & (1u << 1)) != 0
                 ? decoder.ReadByteString("Hash")
-                : default;
+                : default(byte[]);
             HashAlgorithm = (encodingMask & (1u << 2)) != 0
                 ? decoder.ReadString("HashAlgorithm")
-                : default;
+                : default(string);
             Description = (encodingMask & (1u << 3)) != 0
                 ? decoder.ReadLocalizedText("Description")
-                : default;
+                : default(Workstation.ServiceModel.Ua.LocalizedText);
             
             decoder.PopNamespace();
         }
@@ -368,10 +368,10 @@ namespace Ua.MachineVision
             
             HasTransferableDataOnFile = (encodingMask & (1u << 0)) != 0
                 ? decoder.ReadBoolean("HasTransferableDataOnFile")
-                : default;
+                : default(bool?);
             ExternalId = (encodingMask & (1u << 1)) != 0
                 ? decoder.ReadExtensionObject<ConfigurationIdDataType>("ExternalId")
-                : default;
+                : default(ConfigurationIdDataType);
             InternalId = decoder.ReadExtensionObject<ConfigurationIdDataType>("InternalId");
             LastModified = decoder.ReadDateTime("LastModified");
             
@@ -522,7 +522,7 @@ namespace Ua.MachineVision
             Id = decoder.ReadString("Id");
             Description = (encodingMask & (1u << 0)) != 0
                 ? decoder.ReadLocalizedText("Description")
-                : default;
+                : default(Workstation.ServiceModel.Ua.LocalizedText);
             
             decoder.PopNamespace();
         }
@@ -597,7 +597,7 @@ namespace Ua.MachineVision
             Id = decoder.ReadString("Id");
             Description = (encodingMask & (1u << 0)) != 0
                 ? decoder.ReadLocalizedText("Description")
-                : default;
+                : default(Workstation.ServiceModel.Ua.LocalizedText);
             
             decoder.PopNamespace();
         }
@@ -700,10 +700,10 @@ namespace Ua.MachineVision
             EndTime = decoder.ReadDateTime("EndTime");
             AcquisitionDuration = (encodingMask & (1u << 0)) != 0
                 ? decoder.ReadDouble("AcquisitionDuration")
-                : default;
+                : default(double?);
             ProcessingDuration = (encodingMask & (1u << 1)) != 0
                 ? decoder.ReadDouble("ProcessingDuration")
-                : default;
+                : default(double?);
             
             decoder.PopNamespace();
         }
@@ -814,7 +814,7 @@ namespace Ua.MachineVision
             Id = decoder.ReadString("Id");
             Description = (encodingMask & (1u << 0)) != 0
                 ? decoder.ReadLocalizedText("Description")
-                : default;
+                : default(Workstation.ServiceModel.Ua.LocalizedText);
             
             decoder.PopNamespace();
         }
@@ -1161,37 +1161,37 @@ namespace Ua.MachineVision
             ResultId = decoder.ReadExtensionObject<ResultIdDataType>("ResultId");
             HasTransferableDataOnFile = (encodingMask & (1u << 0)) != 0
                 ? decoder.ReadBoolean("HasTransferableDataOnFile")
-                : default;
+                : default(bool?);
             IsPartial = decoder.ReadBoolean("IsPartial");
             IsSimulated = (encodingMask & (1u << 1)) != 0
                 ? decoder.ReadBoolean("IsSimulated")
-                : default;
+                : default(bool?);
             ResultState = decoder.ReadInt32("ResultState");
             MeasId = (encodingMask & (1u << 2)) != 0
                 ? decoder.ReadExtensionObject<MeasIdDataType>("MeasId")
-                : default;
+                : default(MeasIdDataType);
             PartId = (encodingMask & (1u << 3)) != 0
                 ? decoder.ReadExtensionObject<PartIdDataType>("PartId")
-                : default;
+                : default(PartIdDataType);
             ExternalRecipeId = (encodingMask & (1u << 4)) != 0
                 ? decoder.ReadExtensionObject<RecipeIdExternalDataType>("ExternalRecipeId")
-                : default;
+                : default(RecipeIdExternalDataType);
             InternalRecipeId = decoder.ReadExtensionObject<RecipeIdInternalDataType>("InternalRecipeId");
             ProductId = (encodingMask & (1u << 5)) != 0
                 ? decoder.ReadExtensionObject<ProductIdDataType>("ProductId")
-                : default;
+                : default(ProductIdDataType);
             ExternalConfigurationId = (encodingMask & (1u << 6)) != 0
                 ? decoder.ReadExtensionObject<ConfigurationIdDataType>("ExternalConfigurationId")
-                : default;
+                : default(ConfigurationIdDataType);
             InternalConfigurationId = decoder.ReadExtensionObject<ConfigurationIdDataType>("InternalConfigurationId");
             JobId = decoder.ReadExtensionObject<JobIdDataType>("JobId");
             CreationTime = decoder.ReadDateTime("CreationTime");
             ProcessingTimes = (encodingMask & (1u << 7)) != 0
                 ? decoder.ReadExtensionObject<ProcessingTimesDataType>("ProcessingTimes")
-                : default;
+                : default(ProcessingTimesDataType);
             ResultContent = (encodingMask & (1u << 8)) != 0
                 ? decoder.ReadVariantArray("ResultContent")
-                : default;
+                : default(Workstation.ServiceModel.Ua.Variant[]);
             
             decoder.PopNamespace();
         }
@@ -1340,7 +1340,7 @@ namespace Ua.MachineVision
             State = decoder.ReadEnumeration<SystemStateDataType>("State");
             StateDescription = (encodingMask & (1u << 0)) != 0
                 ? decoder.ReadString("StateDescription")
-                : default;
+                : default(string);
             
             decoder.PopNamespace();
         }

@@ -285,6 +285,7 @@ namespace UaTypeGenerator
             {
                 var netType = _typeSet.GetNetType(p.DataTypeId);
                 var suffix = RenderMethodSuffix(netType, p.Rank);
+                var type = RenderType(p, isOptional: true);
 
                 if (p.IsOptional)
                 {
@@ -298,7 +299,7 @@ namespace UaTypeGenerator
                     }
                     writer.Indent++;
                     writer.WriteLine($"? decoder.Read{suffix}(\"{p.SymbolicName}\")");
-                    writer.WriteLine($": default;");
+                    writer.WriteLine($": default({type});");
                     writer.Indent--;
                     index++;
                 }
@@ -333,30 +334,18 @@ namespace UaTypeGenerator
         private void WriteProperty(IndentedTextWriter writer, ClassDefinition.Property p)
         {
             WritePropertyDocumentation(writer, p, isUnion: false);
-            var netType = _typeSet.GetNetType(p.DataTypeId);
-            var r = p.Rank switch
-            {
-                2 => "[,]",
-                1 => "[]",
-                _ => ""
-            };
-            writer.WriteLine($"public {netType.TypeName}{r} {p.SymbolicName} {{ get; set; }}");
+            var type = RenderType(p);
+            writer.WriteLine($"public {type} {p.SymbolicName} {{ get; set; }}");
         }
 
         private void WriteOptionalProperty(IndentedTextWriter writer, ClassDefinition.Property p, int index, bool parentHasOptionalFields)
         {
             WritePropertyDocumentation(writer, p, isUnion: false);
-            var netType = _typeSet.GetNetType(p.DataTypeId);
-            var r = p.Rank switch
-            {
-                2 => "[,]",
-                1 => "[]",
-                _ => ""
-            };
-            var q = (netType.IsReference || p.Rank > 0) ? "" : "?";
+            
+            var type = RenderType(p, isOptional: true);
             var field = GetFieldName(p.SymbolicName);
 
-            writer.WriteLine($"public {netType.TypeName}{r}{q} {p.SymbolicName}");
+            writer.WriteLine($"public {type} {p.SymbolicName}");
             writer.Begin("{");
             writer.WriteLine($"get => {field};");
             writer.WriteLine("set");
@@ -378,7 +367,7 @@ namespace UaTypeGenerator
             writer.Indent--;
             writer.End("}");
             writer.End("}");
-            writer.WriteLine($"private {netType.TypeName}{r}{q} {field};");
+            writer.WriteLine($"private {type} {field};");
         }
         
         private void WritePropertyDocumentation(IndentedTextWriter writer, ClassDefinition.Property p, bool isUnion)
@@ -699,6 +688,21 @@ namespace UaTypeGenerator
             }
 
             return $"Encodable{array}<{netType.TypeName}>";
+        }
+
+        private string RenderType(ClassDefinition.Property p, bool isOptional = false)
+        {
+            var netType = _typeSet.GetNetType(p.DataTypeId);
+            var r = p.Rank switch
+            {
+                2 => "[,]",
+                1 => "[]",
+                _ => ""
+            };
+            var q = (!isOptional || netType.IsReference || p.Rank > 0) ? "" : "?";
+            var field = GetFieldName(p.SymbolicName);
+
+            return $"{netType.TypeName}{r}{q}";
         }
         
         private string GetFieldName(string name)

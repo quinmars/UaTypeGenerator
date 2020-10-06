@@ -291,13 +291,13 @@ namespace Ua.AutoID
             
             CodeType = (encodingMask & (1u << 0)) != 0
                 ? decoder.ReadString("CodeType")
-                : default;
+                : default(string);
             Identifier = (encodingMask & (1u << 1)) != 0
                 ? decoder.ReadExtensionObject<ScanData>("Identifier")
-                : default;
+                : default(ScanData);
             Timestamp = (encodingMask & (1u << 2)) != 0
                 ? decoder.ReadDateTime("Timestamp")
-                : default;
+                : default(System.DateTime?);
             
             decoder.PopNamespace();
         }
@@ -496,25 +496,25 @@ namespace Ua.AutoID
             
             CodeTypeRWData = (encodingMask & (1u << (0 + offset))) != 0
                 ? decoder.ReadString("CodeTypeRWData")
-                : default;
+                : default(string);
             RWData = (encodingMask & (1u << (1 + offset))) != 0
                 ? decoder.ReadExtensionObject<ScanData>("RWData")
-                : default;
+                : default(ScanData);
             Antenna = (encodingMask & (1u << (2 + offset))) != 0
                 ? decoder.ReadInt32("Antenna")
-                : default;
+                : default(int?);
             CurrentPowerLevel = (encodingMask & (1u << (3 + offset))) != 0
                 ? decoder.ReadInt32("CurrentPowerLevel")
-                : default;
+                : default(int?);
             PC = (encodingMask & (1u << (4 + offset))) != 0
                 ? decoder.ReadUInt16("PC")
-                : default;
+                : default(ushort?);
             Polarization = (encodingMask & (1u << (5 + offset))) != 0
                 ? decoder.ReadString("Polarization")
-                : default;
+                : default(string);
             Strength = (encodingMask & (1u << (6 + offset))) != 0
                 ? decoder.ReadInt32("Strength")
-                : default;
+                : default(int?);
             
             decoder.PopNamespace();
         }
@@ -1057,7 +1057,7 @@ namespace Ua.AutoID
             Timestamp = decoder.ReadDateTime("Timestamp");
             Location = (encodingMask & (1u << 0)) != 0
                 ? decoder.ReadExtensionObject<Location>("Location")
-                : default;
+                : default(Location);
             
             decoder.PopNamespace();
         }
@@ -1163,10 +1163,10 @@ namespace Ua.AutoID
             Position = decoder.ReadExtensionObject<Position>("Position");
             Font = (encodingMask & (1u << (0 + offset))) != 0
                 ? decoder.ReadString("Font")
-                : default;
+                : default(string);
             DecodingTime = (encodingMask & (1u << (1 + offset))) != 0
                 ? decoder.ReadDateTime("DecodingTime")
-                : default;
+                : default(System.DateTime?);
             
             decoder.PopNamespace();
         }
@@ -1294,16 +1294,16 @@ namespace Ua.AutoID
             
             Grade = (encodingMask & (1u << (0 + offset))) != 0
                 ? decoder.ReadFloat("Grade")
-                : default;
+                : default(float?);
             Position = (encodingMask & (1u << (1 + offset))) != 0
                 ? decoder.ReadExtensionObject<Position>("Position")
-                : default;
+                : default(Position);
             Symbology = (encodingMask & (1u << (2 + offset))) != 0
                 ? decoder.ReadString("Symbology")
-                : default;
+                : default(string);
             ImageId = (encodingMask & (1u << (3 + offset))) != 0
                 ? decoder.ReadNodeId("ImageId")
-                : default;
+                : default(Workstation.ServiceModel.Ua.NodeId);
             
             decoder.PopNamespace();
         }
@@ -1578,7 +1578,7 @@ namespace Ua.AutoID
             DataAvailable = decoder.ReadBoolean("DataAvailable");
             LocationType = (encodingMask & (1u << 0)) != 0
                 ? decoder.ReadEnumeration<LocationTypeEnumeration>("LocationType")
-                : default;
+                : default(LocationTypeEnumeration?);
             
             decoder.PopNamespace();
         }

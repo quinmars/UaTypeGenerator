@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Workstation.UaClient" Version="2.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Opc.Ua.CNC.NodeSet.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Opc.Ua.CNC.NodeSet.xml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="Build">
+    <Exec Command="cd $(ProjectDir) &amp;&amp; dotnet ..\UaTypeGenerator\bin\Debug\netcoreapp2.0\UaTypeGenerator.dll -f Opc.Ua.CNC.NodeSet.xml -n Ua.CNC " />
+  </Target>
+
+  <PropertyGroup>
+    <BuildDependsOn>$(BuildDependsOn);GenerateService</BuildDependsOn>
+  </PropertyGroup>
+</Project>

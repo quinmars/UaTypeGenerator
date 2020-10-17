@@ -12,7 +12,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ua.DI", "Ua.DI\Ua.DI.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ua.AutoID", "Ua.AutoID\Ua.AutoID.csproj", "{C513E4C3-D5B1-418C-AA20-326B2D76A727}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ua.MachineVision", "Ua.MachineVision\Ua.MachineVision.csproj", "{DCC15914-AF2E-4E15-99A0-CDD97BE2A1AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ua.MachineVision", "Ua.MachineVision\Ua.MachineVision.csproj", "{DCC15914-AF2E-4E15-99A0-CDD97BE2A1AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ua.CNC", "Ua.CNC\Ua.CNC.csproj", "{6F158323-3BE7-4EBA-90D8-71C3C6F87DBF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +38,10 @@ Global
 		{DCC15914-AF2E-4E15-99A0-CDD97BE2A1AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCC15914-AF2E-4E15-99A0-CDD97BE2A1AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCC15914-AF2E-4E15-99A0-CDD97BE2A1AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F158323-3BE7-4EBA-90D8-71C3C6F87DBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F158323-3BE7-4EBA-90D8-71C3C6F87DBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F158323-3BE7-4EBA-90D8-71C3C6F87DBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F158323-3BE7-4EBA-90D8-71C3C6F87DBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

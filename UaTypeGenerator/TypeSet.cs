@@ -222,15 +222,15 @@ namespace UaTypeGenerator
                     case GuidNumber:           return new TypeInfo { TypeName = "System.Guid" };
                     case ByteStringNumber:     return new TypeInfo { TypeName = "byte[]", IsReference = true };
                     case XmlElementNumber:     return new TypeInfo { TypeName = "System.XmlElement", IsReference = true };
-                    case NodeIdNumber:         return new TypeInfo { TypeName = "Workstation.ServiceModel.Ua.NodeId", IsReference = true };
-                    case ExpandedNodeIdNumber: return new TypeInfo { TypeName = "Workstation.ServiceModel.Ua.ExpandedNodeId", IsReference = true };
+                    case NodeIdNumber:         return new TypeInfo { TypeName = "Workstation.ServiceModel.Ua.NodeId", IsReference = true, IsClass = true };
+                    case ExpandedNodeIdNumber: return new TypeInfo { TypeName = "Workstation.ServiceModel.Ua.ExpandedNodeId", IsReference = true, IsClass = true };
                     case StatusCodeNumber:     return new TypeInfo { TypeName = "Workstation.ServiceModel.Ua.StatusCode" };
-                    case QualifiedNameNumber:  return new TypeInfo { TypeName = "Workstation.ServiceModel.Ua.QualifiedName", IsReference = true };
-                    case LocalizedTextNumber:  return new TypeInfo { TypeName = "Workstation.ServiceModel.Ua.LocalizedText", IsReference = true };
+                    case QualifiedNameNumber:  return new TypeInfo { TypeName = "Workstation.ServiceModel.Ua.QualifiedName", IsReference = true, IsClass = true };
+                    case LocalizedTextNumber:  return new TypeInfo { TypeName = "Workstation.ServiceModel.Ua.LocalizedText", IsReference = true, IsClass = true };
                     case StructureNumber:      return new TypeInfo { TypeName = "Workstation.ServiceModel.Ua.Structure", IsReference = true, IsAbstract = true, IsClass = true };
-                    case DataValueNumber:      return new TypeInfo { TypeName = "Workstation.ServiceModel.Ua.DataValue", IsReference = true };
+                    case DataValueNumber:      return new TypeInfo { TypeName = "Workstation.ServiceModel.Ua.DataValue", IsReference = true, IsClass = true };
                     case BaseDataTypeNumber:   return new TypeInfo { TypeName = "Workstation.ServiceModel.Ua.Variant" };
-                    case DiagnosticInfoNumber: return new TypeInfo { TypeName = "Workstation.ServiceModel.Ua.DiagnosticInfo", IsReference = true };
+                    case DiagnosticInfoNumber: return new TypeInfo { TypeName = "Workstation.ServiceModel.Ua.DiagnosticInfo", IsReference = true, IsClass = true };
                 }
             }
 

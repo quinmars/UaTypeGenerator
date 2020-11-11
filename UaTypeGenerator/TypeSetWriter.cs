@@ -24,6 +24,7 @@ namespace UaTypeGenerator
         {
             WriteFileHeader(writer);
 
+            writer.WriteLine("[assembly: Workstation.ServiceModel.Ua.TypeLibrary]");
             writer.WriteLine($"namespace {_netNamespace}");
             writer.Begin("{");
 

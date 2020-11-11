@@ -7,6 +7,7 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
+[assembly: Workstation.ServiceModel.Ua.TypeLibrary]
 namespace Ua.AutoID
 {
     /// <summary>

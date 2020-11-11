@@ -260,7 +260,6 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
             encoder.WriteUInt32("EncodingMask", EncodingMask);
@@ -283,7 +282,6 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
             var encodingMask = decoder.ReadUInt32(null);
@@ -542,7 +540,6 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
             encoder.WriteInt32("AntennaId", AntennaId);
@@ -554,7 +551,6 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
             AntennaId = decoder.ReadInt32("AntennaId");
@@ -630,7 +626,6 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
             encoder.WriteByte("LaRes", LaRes);
@@ -651,7 +646,6 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
             LaRes = decoder.ReadByte("LaRes");
@@ -712,7 +706,6 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
             encoder.WriteDouble("X", X);
@@ -728,7 +721,6 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
             X = decoder.ReadDouble("X");
@@ -779,7 +771,6 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
             encoder.WriteInt32("PositionX", PositionX);
@@ -794,7 +785,6 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
             PositionX = decoder.ReadInt32("PositionX");
@@ -841,7 +831,6 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
             encoder.WriteInt32("Antenna", Antenna);
@@ -855,7 +844,6 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
             Antenna = decoder.ReadInt32("Antenna");
@@ -894,7 +882,6 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
             encoder.WriteDouble("Yaw", Yaw);
@@ -907,7 +894,6 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
             Yaw = decoder.ReadDouble("Yaw");
@@ -950,7 +936,6 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
             encoder.WriteUInt16("PC", PC);
@@ -964,7 +949,6 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
             PC = decoder.ReadUInt16("PC");
@@ -1028,7 +1012,6 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
             encoder.WriteUInt32("EncodingMask", EncodingMask);
@@ -1046,7 +1029,6 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
             var encodingMask = decoder.ReadUInt32(null);
@@ -1549,7 +1531,6 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
             encoder.WriteUInt32("EncodingMask", EncodingMask);
@@ -1567,7 +1548,6 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
             var encodingMask = decoder.ReadUInt32(null);
@@ -1964,7 +1944,6 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
             encoder.WriteString("N_S_Hemisphere", N_S_Hemisphere);
@@ -1983,7 +1962,6 @@ namespace Ua.AutoID
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/AutoID/");
             
             N_S_Hemisphere = decoder.ReadString("N_S_Hemisphere");

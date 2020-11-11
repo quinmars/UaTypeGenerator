@@ -56,6 +56,23 @@ namespace Ua.DI
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/DI/;i=6522")]
     public abstract class FetchResultDataType : Workstation.ServiceModel.Ua.Structure
     {
+        /// <<inheritdoc/>
+        public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
+        {
+            encoder.PushNamespace("http://opcfoundation.org/UA/DI/");
+            
+            
+            encoder.PopNamespace();
+        }
+        
+        /// <<inheritdoc/>
+        public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
+        {
+            decoder.PushNamespace("http://opcfoundation.org/UA/DI/");
+            
+            
+            decoder.PopNamespace();
+        }
     }
     
     /// <summary>
@@ -180,7 +197,6 @@ namespace Ua.DI
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/DI/");
             
             encoder.WriteQualifiedNameArray("NodePath", NodePath);
@@ -193,7 +209,6 @@ namespace Ua.DI
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/DI/");
             
             NodePath = decoder.ReadQualifiedNameArray("NodePath");

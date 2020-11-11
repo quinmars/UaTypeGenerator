@@ -187,7 +187,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             encoder.WriteUInt32("EncodingMask", EncodingMask);
@@ -215,7 +214,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             var encodingMask = decoder.ReadUInt32(null);
@@ -339,7 +337,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             encoder.WriteUInt32("EncodingMask", EncodingMask);
@@ -360,7 +357,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             var encodingMask = decoder.ReadUInt32(null);
@@ -396,7 +392,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             encoder.WriteExtensionObject<ConfigurationIdDataType>("InternalId", InternalId);
@@ -407,7 +402,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             InternalId = decoder.ReadExtensionObject<ConfigurationIdDataType>("InternalId");
@@ -434,7 +428,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             encoder.WriteString("Id", Id);
@@ -445,7 +438,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             Id = decoder.ReadString("Id");
@@ -497,7 +489,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             encoder.WriteUInt32("EncodingMask", EncodingMask);
@@ -513,7 +504,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             var encodingMask = decoder.ReadUInt32(null);
@@ -572,7 +562,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             encoder.WriteUInt32("EncodingMask", EncodingMask);
@@ -588,7 +577,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             var encodingMask = decoder.ReadUInt32(null);
@@ -669,7 +657,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             encoder.WriteUInt32("EncodingMask", EncodingMask);
@@ -690,7 +677,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             var encodingMask = decoder.ReadUInt32(null);
@@ -727,7 +713,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             encoder.WriteExtensionObject<ProductIdDataType>("ExternalId", ExternalId);
@@ -738,7 +723,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             ExternalId = decoder.ReadExtensionObject<ProductIdDataType>("ExternalId");
@@ -789,7 +773,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             encoder.WriteUInt32("EncodingMask", EncodingMask);
@@ -805,7 +788,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             var encodingMask = decoder.ReadUInt32(null);
@@ -838,7 +820,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             encoder.WriteExtensionObject<RecipeIdInternalDataType>("InternalId", InternalId);
@@ -849,7 +830,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             InternalId = decoder.ReadExtensionObject<RecipeIdInternalDataType>("InternalId");
@@ -1098,7 +1078,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             encoder.WriteUInt32("EncodingMask", EncodingMask);
@@ -1152,7 +1131,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             var encodingMask = decoder.ReadUInt32(null);
@@ -1215,7 +1193,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             encoder.WriteString("Id", Id);
@@ -1226,7 +1203,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             Id = decoder.ReadString("Id");
@@ -1252,7 +1228,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             encoder.WriteExtensionObject<ResultIdDataType>("Id", Id);
@@ -1263,7 +1238,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             Id = decoder.ReadExtensionObject<ResultIdDataType>("Id");
@@ -1315,7 +1289,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             encoder.WriteUInt32("EncodingMask", EncodingMask);
@@ -1331,7 +1304,6 @@ namespace Ua.MachineVision
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/MachineVision");
             
             var encodingMask = decoder.ReadUInt32(null);

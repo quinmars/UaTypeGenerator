@@ -176,7 +176,6 @@ namespace Ua.CNC
         /// <<inheritdoc/>
         public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)
         {
-            base.Encode(encoder);
             encoder.PushNamespace("http://opcfoundation.org/UA/CNC");
             
             encoder.WriteDouble("ActPos", ActPos);
@@ -189,7 +188,6 @@ namespace Ua.CNC
         /// <<inheritdoc/>
         public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)
         {
-            base.Decode(decoder);
             decoder.PushNamespace("http://opcfoundation.org/UA/CNC");
             
             ActPos = decoder.ReadDouble("ActPos");

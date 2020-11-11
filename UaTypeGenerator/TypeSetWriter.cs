@@ -84,6 +84,7 @@ namespace UaTypeGenerator
         private void WriteClass(IndentedTextWriter writer, ClassDefinition c)
         {
             bool isDerived = c.ParentDataTypeId != null;
+            bool parentIsStructure = c.ParentDataTypeId == NodeId.Parse(DataTypeIds.Structure);
 
             WriteDocumentation(writer, c, isUnion: false);
             WriteAttributes(writer, c);
@@ -115,11 +116,12 @@ namespace UaTypeGenerator
                 writer.WriteLine();
             }
 
-            if (c.Properties.Any() || !isDerived)
+            bool hasParentMethods = isDerived && !parentIsStructure;
+            if (c.Properties.Any() ||  !hasParentMethods)
             {
-                WriteEncodeMethod(writer, c, isDerived, parentHasOptionalFields);
+                WriteEncodeMethod(writer, c, isDerived, parentIsStructure, parentHasOptionalFields);
                 writer.WriteLine();
-                WriteDecodeMethod(writer, c, isDerived, parentHasOptionalFields);
+                WriteDecodeMethod(writer, c, isDerived, parentIsStructure, parentHasOptionalFields);
             }
             writer.End("}");
         }
@@ -202,7 +204,7 @@ namespace UaTypeGenerator
             }
         }
         
-        private void WriteEncodeMethod(IndentedTextWriter writer, ClassDefinition c, bool isDerived, bool parentHasOptionalFields)
+        private void WriteEncodeMethod(IndentedTextWriter writer, ClassDefinition c, bool isDerived, bool parentIsStructure, bool parentHasOptionalFields)
         {
             var hasOptionalFields = c.OptionalPropertyCount != 0;
             var modifier = isDerived ? "override" : "virtual";
@@ -210,7 +212,7 @@ namespace UaTypeGenerator
             WriteInheritDoc(writer);
             writer.WriteLine($"public {modifier} void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)");
             writer.Begin("{");
-            if (isDerived)
+            if (isDerived && !parentIsStructure)
             {
                 writer.WriteLine("base.Encode(encoder);");
             }
@@ -246,7 +248,7 @@ namespace UaTypeGenerator
             writer.End("}");
         }
 
-        private void WriteDecodeMethod(IndentedTextWriter writer, ClassDefinition c, bool isDerived, bool parentHasOptionalFields)
+        private void WriteDecodeMethod(IndentedTextWriter writer, ClassDefinition c, bool isDerived, bool parentIsStructure, bool parentHasOptionalFields)
         {
             var hasOptionalFields = c.OptionalPropertyCount != 0;
             var modifier = isDerived ? "override" : "virtual";
@@ -259,7 +261,7 @@ namespace UaTypeGenerator
                 writer.WriteLine("int offset = base.OptionalFieldCount;");
                 writer.WriteLine();
             }
-            if (isDerived)
+            if (isDerived && !parentIsStructure)
             {
                 writer.WriteLine("base.Decode(decoder);");
             }

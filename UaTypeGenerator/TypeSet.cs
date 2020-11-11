@@ -61,7 +61,6 @@ namespace UaTypeGenerator
             var table = from assembly in assemblies
                         from type in assembly.ExportedTypes
                         let info = type.GetTypeInfo()
-                        where info.ImplementedInterfaces.Contains(typeof(IEncodable))
                         let attr = info.GetCustomAttribute<DataTypeIdAttribute>(false)
                         where attr != null
                         select (attr.NodeId, type);
@@ -72,7 +71,7 @@ namespace UaTypeGenerator
                 {
                     TypeName = t.type.FullName,
                     IsEnum = t.type.IsEnum,
-                    IsReference = t.type.IsByRef,
+                    IsReference = !t.type.IsValueType,
                     IsAbstract = t.type.IsAbstract,
                     IsClass = t.type.IsClass
                 });
@@ -222,15 +221,6 @@ namespace UaTypeGenerator
                     case GuidNumber:           return new TypeInfo { TypeName = "System.Guid" };
                     case ByteStringNumber:     return new TypeInfo { TypeName = "byte[]", IsReference = true };
                     case XmlElementNumber:     return new TypeInfo { TypeName = "System.XmlElement", IsReference = true };
-                    case NodeIdNumber:         return new TypeInfo { TypeName = "Workstation.ServiceModel.Ua.NodeId", IsReference = true, IsClass = true };
-                    case ExpandedNodeIdNumber: return new TypeInfo { TypeName = "Workstation.ServiceModel.Ua.ExpandedNodeId", IsReference = true, IsClass = true };
-                    case StatusCodeNumber:     return new TypeInfo { TypeName = "Workstation.ServiceModel.Ua.StatusCode" };
-                    case QualifiedNameNumber:  return new TypeInfo { TypeName = "Workstation.ServiceModel.Ua.QualifiedName", IsReference = true, IsClass = true };
-                    case LocalizedTextNumber:  return new TypeInfo { TypeName = "Workstation.ServiceModel.Ua.LocalizedText", IsReference = true, IsClass = true };
-                    case StructureNumber:      return new TypeInfo { TypeName = "Workstation.ServiceModel.Ua.Structure", IsReference = true, IsAbstract = true, IsClass = true };
-                    case DataValueNumber:      return new TypeInfo { TypeName = "Workstation.ServiceModel.Ua.DataValue", IsReference = true, IsClass = true };
-                    case BaseDataTypeNumber:   return new TypeInfo { TypeName = "Workstation.ServiceModel.Ua.Variant" };
-                    case DiagnosticInfoNumber: return new TypeInfo { TypeName = "Workstation.ServiceModel.Ua.DiagnosticInfo", IsReference = true, IsClass = true };
                 }
             }
 

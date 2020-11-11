@@ -9,13 +9,6 @@
 
 namespace Ua.CNC
 {
-    // Ideally this should go into Workstation.UaClient
-    public interface IOptionalFields
-    {
-        int OptionalFieldCount { get; }
-        uint EncodingMask { get; }
-    }
-    
     /// <summary>
     /// Status of a CNC axis.
     /// </summary>

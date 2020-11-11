@@ -9,13 +9,6 @@
 
 namespace Ua.MachineVision
 {
-    // Ideally this should go into Workstation.UaClient
-    public interface IOptionalFields
-    {
-        int OptionalFieldCount { get; }
-        uint EncodingMask { get; }
-    }
-    
     /// <summary>
     /// The SystemStateDataType enumeration.
     /// </summary>
@@ -91,7 +84,7 @@ namespace Ua.MachineVision
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/MachineVision;i=5271")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/MachineVision;i=3019")]
     public abstract class BinaryIdBaseDataType : Workstation.ServiceModel.Ua.Structure,
-            IOptionalFields
+            Workstation.ServiceModel.Ua.IOptionalFields
     {
         /// <<inheritdoc/>
         public virtual int OptionalFieldCount => 4;
@@ -278,7 +271,7 @@ namespace Ua.MachineVision
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/MachineVision;i=5089")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/MachineVision;i=3007")]
     public class ConfigurationDataType : Workstation.ServiceModel.Ua.Structure,
-            IOptionalFields
+            Workstation.ServiceModel.Ua.IOptionalFields
     {
         /// <<inheritdoc/>
         public virtual int OptionalFieldCount => 2;
@@ -454,7 +447,7 @@ namespace Ua.MachineVision
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/MachineVision;i=5007")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/MachineVision;i=3015")]
     public class MeasIdDataType : Workstation.ServiceModel.Ua.Structure,
-            IOptionalFields
+            Workstation.ServiceModel.Ua.IOptionalFields
     {
         /// <<inheritdoc/>
         public virtual int OptionalFieldCount => 1;
@@ -526,7 +519,7 @@ namespace Ua.MachineVision
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/MachineVision;i=5014")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/MachineVision;i=3004")]
     public class PartIdDataType : Workstation.ServiceModel.Ua.Structure,
-            IOptionalFields
+            Workstation.ServiceModel.Ua.IOptionalFields
     {
         /// <<inheritdoc/>
         public virtual int OptionalFieldCount => 1;
@@ -599,7 +592,7 @@ namespace Ua.MachineVision
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/MachineVision;i=5017")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/MachineVision;i=3005")]
     public class ProcessingTimesDataType : Workstation.ServiceModel.Ua.Structure,
-            IOptionalFields
+            Workstation.ServiceModel.Ua.IOptionalFields
     {
         /// <<inheritdoc/>
         public virtual int OptionalFieldCount => 2;
@@ -739,7 +732,7 @@ namespace Ua.MachineVision
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/MachineVision;i=5225")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/MachineVision;i=3003")]
     public class ProductIdDataType : Workstation.ServiceModel.Ua.Structure,
-            IOptionalFields
+            Workstation.ServiceModel.Ua.IOptionalFields
     {
         /// <<inheritdoc/>
         public virtual int OptionalFieldCount => 1;
@@ -846,7 +839,7 @@ namespace Ua.MachineVision
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/MachineVision;i=5019")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/MachineVision;i=3006")]
     public class ResultDataType : Workstation.ServiceModel.Ua.Structure,
-            IOptionalFields
+            Workstation.ServiceModel.Ua.IOptionalFields
     {
         /// <<inheritdoc/>
         public virtual int OptionalFieldCount => 9;
@@ -1254,7 +1247,7 @@ namespace Ua.MachineVision
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/MachineVision;i=5279")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/MachineVision;i=3024")]
     public class SystemStateDescriptionDataType : Workstation.ServiceModel.Ua.Structure,
-            IOptionalFields
+            Workstation.ServiceModel.Ua.IOptionalFields
     {
         /// <<inheritdoc/>
         public virtual int OptionalFieldCount => 1;

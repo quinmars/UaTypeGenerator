@@ -9,13 +9,6 @@
 
 namespace Ua.DI
 {
-    // Ideally this should go into Workstation.UaClient
-    public interface IOptionalFields
-    {
-        int OptionalFieldCount { get; }
-        uint EncodingMask { get; }
-    }
-    
     /// <summary>
     /// The DeviceHealthEnumeration enumeration.
     /// </summary>

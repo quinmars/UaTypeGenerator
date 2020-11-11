@@ -49,13 +49,6 @@ namespace UaTypeGenerator
 
         private void WriteCommonTypes(IndentedTextWriter writer)
         {
-            writer.WriteLine("// Ideally this should go into Workstation.UaClient");
-            writer.WriteLine("public interface IOptionalFields");
-            writer.Begin("{");
-            writer.WriteLine("int OptionalFieldCount { get; }");
-            writer.WriteLine("uint EncodingMask { get; }");
-            writer.End("}");
-            writer.WriteLine();
         }
 
         private void WriteDefinitions(IndentedTextWriter writer)
@@ -198,7 +191,7 @@ namespace UaTypeGenerator
             {
                 writer.Indent++;
                 writer.Indent++;
-                writer.WriteLine("IOptionalFields");
+                writer.WriteLine("Workstation.ServiceModel.Ua.IOptionalFields");
                 writer.Indent--;
                 writer.Indent--;
             }

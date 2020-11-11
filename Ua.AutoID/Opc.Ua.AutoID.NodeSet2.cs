@@ -9,13 +9,6 @@
 
 namespace Ua.AutoID
 {
-    // Ideally this should go into Workstation.UaClient
-    public interface IOptionalFields
-    {
-        int OptionalFieldCount { get; }
-        uint EncodingMask { get; }
-    }
-    
     /// <summary>
     /// The AutoIdOperationStatusEnumeration enumeration.
     /// </summary>
@@ -195,7 +188,7 @@ namespace Ua.AutoID
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5023")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3017")]
     public class AccessResult : Workstation.ServiceModel.Ua.Structure,
-            IOptionalFields
+            Workstation.ServiceModel.Ua.IOptionalFields
     {
         /// <<inheritdoc/>
         public virtual int OptionalFieldCount => 3;
@@ -968,7 +961,7 @@ namespace Ua.AutoID
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5003")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3001")]
     public abstract class ScanResult : Workstation.ServiceModel.Ua.Structure,
-            IOptionalFields
+            Workstation.ServiceModel.Ua.IOptionalFields
     {
         /// <<inheritdoc/>
         public virtual int OptionalFieldCount => 1;
@@ -1488,7 +1481,7 @@ namespace Ua.AutoID
     [Workstation.ServiceModel.Ua.XmlEncodingId("nsu=http://opcfoundation.org/UA/AutoID/;i=5016")]
     [Workstation.ServiceModel.Ua.DataTypeId("nsu=http://opcfoundation.org/UA/AutoID/;i=3010")]
     public class ScanSettings : Workstation.ServiceModel.Ua.Structure,
-            IOptionalFields
+            Workstation.ServiceModel.Ua.IOptionalFields
     {
         /// <<inheritdoc/>
         public virtual int OptionalFieldCount => 1;

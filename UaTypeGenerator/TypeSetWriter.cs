@@ -13,6 +13,12 @@ namespace UaTypeGenerator
     {
         private readonly TypeSet _typeSet;
         private readonly string _netNamespace;
+
+        private class NestedType
+        {
+            public string[] Path { get; set; }
+            public BaseDefinition Definition { get; set; }
+        }
         
         public TypeSetWriter(TypeSet typeSet, string netNamespace)
         {
@@ -54,28 +60,75 @@ namespace UaTypeGenerator
 
         private void WriteDefinitions(IndentedTextWriter writer)
         {
-            foreach (var d in _typeSet.Definitions)
-            {
-                switch (d)
+            var types = _typeSet
+                .Definitions
+                .Select(d => new NestedType
                 {
-                    case ClassDefinition c when c.IsUnion:
-                        WriteUnion(writer, c);
-                        break;
-                    case ClassDefinition c:
-                        WriteClass(writer, c);
-                        break;
-                    case EnumDefinition e:
-                        WriteEnumeration(writer, e);
-                        break;
+                    Path = d.SymbolicName.Split('.'),
+                    Definition = d
+                })
+                .ToList();
+
+            WriteNestedTypes(writer, types);
+        }
+
+        private void WriteNestedTypes(IndentedTextWriter writer, IEnumerable<NestedType> nestedTypes)
+        {
+            var groups = nestedTypes.GroupBy(t => t.Path.FirstOrDefault());
+
+            foreach (var g in groups)
+            {
+                var containing = g.FirstOrDefault(c => c.Path.Length == 1);
+                var contained = g
+                    .Where(c => c.Path.Length > 1)
+                    .Select(c => new NestedType
+                    {
+                        Path = c.Path.Skip(1).ToArray(),
+                        Definition = c.Definition
+                    })
+                    .ToList();
+
+                if (containing != null)
+                {
+                    switch (containing.Definition)
+                    {
+                        case ClassDefinition c when c.IsUnion:
+                            WriteUnion(writer, c, g.Key, contained);
+                            break;
+                        case ClassDefinition c:
+                            WriteClass(writer, c, g.Key, contained);
+                            break;
+                        case EnumDefinition e:
+                            WriteEnumeration(writer, e);
+                            break;
+                    }
                 }
+                else
+                {
+                    WriteStaticClass(writer, g.Key, contained);
+                }
+
                 writer.WriteLine();
             }
+        }
+        
+        /*
+         * Static class
+         */
+        private void WriteStaticClass(IndentedTextWriter writer, string name, IEnumerable<NestedType> nestedTypes)
+        {
+            writer.WriteLine($"public static class {name}");
+            writer.Begin("{");
+
+            WriteNestedTypes(writer, nestedTypes);
+
+            writer.End("}");
         }
 
         /*
          * Class and unions
          */
-        private void WriteClass(IndentedTextWriter writer, ClassDefinition c)
+        private void WriteClass(IndentedTextWriter writer, ClassDefinition c, string name, IEnumerable<NestedType> nestedTypes)
         {
             bool isDerived = c.ParentDataTypeId != null;
             bool parentIsStructure = c.ParentDataTypeId == NodeId.Parse(DataTypeIds.Structure);
@@ -86,9 +139,14 @@ namespace UaTypeGenerator
             var hasOptionalFields = c.OptionalPropertyCount != 0;
             var parentHasOptionalFields = _typeSet.ParentHasOptionalProperties(c);
 
-            WriteClassHeader(writer, c, parentHasOptionalFields);
+            WriteClassHeader(writer, c, name, parentHasOptionalFields);
 
             writer.Begin("{");
+
+            if (nestedTypes.Any())
+            {
+                WriteNestedTypes(writer, nestedTypes);
+            }
 
             if (hasOptionalFields)
             {
@@ -181,7 +239,7 @@ namespace UaTypeGenerator
             return Microsoft.CodeAnalysis.CSharp.SymbolDisplay.FormatLiteral(input, true);
         }
 
-        private void WriteClassHeader(IndentedTextWriter writer, ClassDefinition c, bool parentHasOptionalFields)
+        private void WriteClassHeader(IndentedTextWriter writer, ClassDefinition c, string name, bool parentHasOptionalFields)
         {
             var hasOptionalFields = c.OptionalPropertyCount != 0;
             string optionalInterface = (hasOptionalFields && !parentHasOptionalFields) ? "," : "";
@@ -190,7 +248,7 @@ namespace UaTypeGenerator
                 var netType = _typeSet.GetNetType(c.ParentDataTypeId);
                 var absmodifier = c.IsAbstract ? "abstract " : "";
 
-                writer.WriteLine($"public {absmodifier}class {c.SymbolicName} : {netType.TypeName}{optionalInterface}");
+                writer.WriteLine($"public {absmodifier}class {name} : {netType.TypeName}{optionalInterface}");
             }
             else
             {
@@ -410,14 +468,19 @@ namespace UaTypeGenerator
         /*
          * Union
          */
-        private void WriteUnion(IndentedTextWriter writer, ClassDefinition c)
+        private void WriteUnion(IndentedTextWriter writer, ClassDefinition c, string name, IEnumerable<NestedType> nestedTypes)
         {
             WriteDocumentation(writer, c, isUnion: true);
             WriteAttributes(writer, c);
 
-            WriteUnionHeader(writer, c);
+            WriteUnionHeader(writer, c, name);
 
             writer.Begin("{");
+            
+            if (nestedTypes.Any())
+            {
+                WriteNestedTypes(writer, nestedTypes);
+            }
 
             WriteUnionEnum(writer, c);
             writer.WriteLine();
@@ -437,9 +500,9 @@ namespace UaTypeGenerator
             writer.End("}");
         }
 
-        private void WriteUnionHeader(IndentedTextWriter writer, ClassDefinition c)
+        private void WriteUnionHeader(IndentedTextWriter writer, ClassDefinition c, string name)
         {
-            writer.WriteLine($"public sealed class {c.SymbolicName} : Workstation.ServiceModel.Ua.Union");
+            writer.WriteLine($"public sealed class {name} : Workstation.ServiceModel.Ua.Union");
         }
 
         private void WriteUnionEnum(IndentedTextWriter writer, ClassDefinition c)

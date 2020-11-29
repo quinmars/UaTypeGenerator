@@ -155,22 +155,30 @@ namespace UaTypeGenerator
         {
             if (_typeSet.TryGetExpandedNodeId(c.BinaryEncodingId, out ExpandedNodeId eId))
             {
-                writer.WriteLine($"[Workstation.ServiceModel.Ua.BinaryEncodingId(\"{eId}\")]");
+                var idString = ToStringLiteral(eId.ToString());
+                writer.WriteLine($"[Workstation.ServiceModel.Ua.BinaryEncodingId({idString})]");
             }
 
             if (_typeSet.TryGetExpandedNodeId(c.XmlEncodingId, out eId))
             {
-                writer.WriteLine($"[Workstation.ServiceModel.Ua.XmlEncodingId(\"{eId}\")]");
+                var idString = ToStringLiteral(eId.ToString());
+                writer.WriteLine($"[Workstation.ServiceModel.Ua.XmlEncodingId({idString})]");
             }
             
             if (_typeSet.TryGetExpandedNodeId(c.DataTypeId, out eId))
             {
-                writer.WriteLine($"[Workstation.ServiceModel.Ua.DataTypeId(\"{eId}\")]");
+                var idString = ToStringLiteral(eId.ToString());
+                writer.WriteLine($"[Workstation.ServiceModel.Ua.DataTypeId({idString})]");
             }
             else
             {
                 throw new InvalidDataException($"No data type id for class {c.SymbolicName}.");
             }
+        }
+
+        private static string ToStringLiteral(string input)
+        {
+            return Microsoft.CodeAnalysis.CSharp.SymbolDisplay.FormatLiteral(input, true);
         }
 
         private void WriteClassHeader(IndentedTextWriter writer, ClassDefinition c, bool parentHasOptionalFields)
@@ -211,7 +219,7 @@ namespace UaTypeGenerator
                 writer.WriteLine("base.Encode(encoder);");
             }
 
-            writer.WriteLine($"encoder.PushNamespace(\"{c.Namespace}\");");
+            writer.WriteLine($"encoder.PushNamespace({ToStringLiteral(c.Namespace)});");
             writer.WriteLine();
             if (hasOptionalFields && !parentHasOptionalFields)
             {
@@ -260,7 +268,7 @@ namespace UaTypeGenerator
                 writer.WriteLine("base.Decode(decoder);");
             }
 
-            writer.WriteLine($"decoder.PushNamespace(\"{c.Namespace}\");");
+            writer.WriteLine($"decoder.PushNamespace({ToStringLiteral(c.Namespace)});");
             writer.WriteLine();
             if (hasOptionalFields)
             {
@@ -483,7 +491,7 @@ namespace UaTypeGenerator
             writer.WriteLine($"public override void Encode(Workstation.ServiceModel.Ua.IEncoder encoder)");
             writer.Begin("{");
 
-            writer.WriteLine($"encoder.PushNamespace(\"{c.Namespace}\");");
+            writer.WriteLine($"encoder.PushNamespace({ToStringLiteral(c.Namespace)});");
             writer.WriteLine();
             writer.WriteLine($"encoder.WriteUInt32(\"SwitchField\", (uint)SwitchField);");
             writer.WriteLine($"switch (SwitchField)");
@@ -520,7 +528,7 @@ namespace UaTypeGenerator
             writer.WriteLine($"public override void Decode(Workstation.ServiceModel.Ua.IDecoder decoder)");
             writer.Begin("{");
 
-            writer.WriteLine($"decoder.PushNamespace(\"{c.Namespace}\");");
+            writer.WriteLine($"decoder.PushNamespace({ToStringLiteral(c.Namespace)});");
             writer.WriteLine();
             writer.WriteLine($"var switchField = (UnionField)decoder.ReadUInt32(null);");
             writer.WriteLine($"switch (switchField)");
@@ -561,7 +569,8 @@ namespace UaTypeGenerator
 
             if (_typeSet.TryGetExpandedNodeId(e.DataTypeId, out var eId))
             {
-                writer.WriteLine($"[Workstation.ServiceModel.Ua.DataTypeId(\"{eId}\")]");
+                var idString = ToStringLiteral(eId.ToString());
+                writer.WriteLine($"[Workstation.ServiceModel.Ua.DataTypeId({idString})]");
             }
             else
             {

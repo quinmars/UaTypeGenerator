@@ -1193,9 +1193,9 @@ namespace UaTypeGenerator
         
         private string arrayDimensionsField;
         
-        private byte accessLevelField;
+        private ushort accessLevelField;
         
-        private byte userAccessLevelField;
+        private ushort userAccessLevelField;
         
         private double minimumSamplingIntervalField;
         
@@ -1205,8 +1205,8 @@ namespace UaTypeGenerator
             this.dataTypeField = "i=24";
             this.valueRankField = -1;
             this.arrayDimensionsField = "";
-            this.accessLevelField = ((byte)(1));
-            this.userAccessLevelField = ((byte)(1));
+            this.accessLevelField = ((ushort)(1));
+            this.userAccessLevelField = ((ushort)(1));
             this.minimumSamplingIntervalField = 0D;
             this.historizingField = false;
         }
@@ -1271,7 +1271,7 @@ namespace UaTypeGenerator
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         [System.ComponentModel.DefaultValueAttribute(typeof(byte), "1")]
-        public byte AccessLevel {
+        public ushort AccessLevel {
             get {
                 return this.accessLevelField;
             }
@@ -1283,7 +1283,7 @@ namespace UaTypeGenerator
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         [System.ComponentModel.DefaultValueAttribute(typeof(byte), "1")]
-        public byte UserAccessLevel {
+        public ushort UserAccessLevel {
             get {
                 return this.userAccessLevelField;
             }

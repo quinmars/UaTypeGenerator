@@ -294,13 +294,13 @@ namespace UaTypeGenerator
                 {
                     writer.WriteLine($"if ({p.SymbolicName} is {{}} opt{index})");
                     writer.Begin("{");
-                    writer.WriteLine($"encoder.Write{suffix}(\"{p.SymbolicName}\", opt{index});");
+                    writer.WriteLine($"encoder.Write{suffix}({ToStringLiteral(p.OpcUaName)}, opt{index});");
                     writer.End("}");
                     index++;
                 }
                 else
                 {
-                    writer.WriteLine($"encoder.Write{suffix}(\"{p.SymbolicName}\", {p.SymbolicName});");
+                    writer.WriteLine($"encoder.Write{suffix}({ToStringLiteral(p.OpcUaName)}, {p.SymbolicName});");
                 }
             }
             writer.WriteLine();
@@ -360,14 +360,14 @@ namespace UaTypeGenerator
                         writer.WriteLine($"{p.SymbolicName} = (encodingMask & (1u << {index})) != 0");
                     }
                     writer.Indent++;
-                    writer.WriteLine($"? decoder.Read{suffix}(\"{p.SymbolicName}\")");
+                    writer.WriteLine($"? decoder.Read{suffix}({ToStringLiteral(p.OpcUaName)})");
                     writer.WriteLine($": default({type});");
                     writer.Indent--;
                     index++;
                 }
                 else
                 {
-                    writer.WriteLine($"{p.SymbolicName} = decoder.Read{suffix}(\"{p.SymbolicName}\");");
+                    writer.WriteLine($"{p.SymbolicName} = decoder.Read{suffix}({ToStringLiteral(p.OpcUaName)});");
                 }
             }
             writer.WriteLine();
@@ -435,7 +435,7 @@ namespace UaTypeGenerator
         private void WritePropertyDocumentation(IndentedTextWriter writer, ClassDefinition.Property p, bool isUnion)
         {
             string summary = p.Description is null
-                ? $"The {p.SymbolicName} property."
+                ? $"The {p.OpcUaName} property."
                 : p.Description;
             writer.WriteLine("/// <summary>");
             foreach (var line in summary.WordWrap(76 - 4 * writer.Indent))
@@ -570,7 +570,7 @@ namespace UaTypeGenerator
 
                 writer.WriteLine($"case UnionField.{p.SymbolicName}:");
                 writer.Indent++;
-                writer.WriteLine($"encoder.Write{suffix}(\"{p.SymbolicName}\", {p.SymbolicName});");
+                writer.WriteLine($"encoder.Write{suffix}({ToStringLiteral(p.OpcUaName)}, {p.SymbolicName});");
                 writer.WriteLine("break;");
                 writer.Indent--;
             }
@@ -608,7 +608,7 @@ namespace UaTypeGenerator
 
                 writer.WriteLine($"case UnionField.{p.SymbolicName}:");
                 writer.Indent++;
-                writer.WriteLine($"{p.SymbolicName} = decoder.Read{suffix}(\"{p.SymbolicName}\");");
+                writer.WriteLine($"{p.SymbolicName} = decoder.Read{suffix}({ToStringLiteral(p.OpcUaName)});");
                 writer.WriteLine("break;");
                 writer.Indent--;
             }

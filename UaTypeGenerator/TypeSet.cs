@@ -164,7 +164,8 @@ namespace UaTypeGenerator
                                 .Select(f => new ClassDefinition.Property
                                 {
                                     DataTypeId = ParseNodeId(f.DataType),
-                                    SymbolicName = f.SymbolicName ?? f.Name,
+                                    SymbolicName = f.SymbolicName ?? f.Name.ToNetIdentifier(),
+                                    OpcUaName = f.SymbolicName ?? f.Name,
                                     Description = f.Description?.FirstOrDefault()?.Value,
                                     IsOptional = f.IsOptional,
                                     Rank = f.ValueRank

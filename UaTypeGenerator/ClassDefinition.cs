@@ -9,6 +9,7 @@ namespace UaTypeGenerator
     {
         public class Property : BaseDefinition
         {
+            public string OpcUaName { get; set; }
             public NodeId DataTypeId { get; set; }
             public bool IsOptional { get; set; }
             public int Rank { get; set; }

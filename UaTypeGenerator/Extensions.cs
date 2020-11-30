@@ -17,7 +17,7 @@ namespace UaTypeGenerator
             }
             else if (dt.BrowseName != null && QualifiedName.TryParse(dt.BrowseName, out var bname))
             {
-                return bname.Name;
+                return bname.Name.ToNetIdentifier();
             }
             else
             {
@@ -35,6 +35,22 @@ namespace UaTypeGenerator
             }
 
             return null;
+        }
+
+        public static string ToNetIdentifier(this string browseName)
+        {
+            var name = browseName
+                .Replace("\"", "")
+                .Replace("-", "_")
+                .Replace(" ", "_")
+                .Replace(".", "._");
+
+            if (char.IsDigit(name[0]))
+            {
+                name = "_" + name;
+            }
+
+            return name;
         }
 
         public static void Begin(this IndentedTextWriter writer, string opening)

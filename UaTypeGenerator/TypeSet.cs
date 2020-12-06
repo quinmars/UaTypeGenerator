@@ -122,7 +122,7 @@ namespace UaTypeGenerator
                 .Select(dt =>
                 {
                     var dataTypeId = ParseNodeId(dt.NodeId);
-                    _binaryEncodings.TryGetValue(dataTypeId, out var binaryId);
+                    TryGetBinaryEncodingId(dataTypeId, out NodeId binaryId);
                     _xmlEncodings.TryGetValue(dataTypeId, out var xmlId);
 
                     var parentId = GetParentId(dt);
@@ -179,6 +179,33 @@ namespace UaTypeGenerator
                 })
                 .Where(d => d != null)
                 .ToArray();
+        }
+
+        private bool TryGetBinaryEncodingId(NodeId dataTypeId, out NodeId binaryId)
+        {
+            if (_binaryEncodings.TryGetValue(dataTypeId, out binaryId))
+            {
+                return true;
+            }
+
+            // Special case for Siemens
+            if (_namespaceUris.Length > dataTypeId.NamespaceIndex
+                && _namespaceUris[dataTypeId.NamespaceIndex] == "http://www.siemens.com/simatic-s7-opcua")
+            {
+                var idString = dataTypeId.ToString();
+                var binaryIdString = idString.Replace("s=DT_\"", "s=TE_\"");
+
+                if (idString != binaryIdString)
+                {
+                    binaryId = NodeId.Parse(binaryIdString);
+                }
+                else
+                {
+                    binaryId = null;
+                }
+            }
+
+            return binaryId != null;
         }
 
         public bool TryGetExpandedNodeId(NodeId nodeId, out ExpandedNodeId eId)

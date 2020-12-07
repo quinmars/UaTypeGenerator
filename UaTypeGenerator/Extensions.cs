@@ -81,7 +81,7 @@ namespace UaTypeGenerator
 
                 index = text.LastIndexOf(' ', width);
 
-                if (index >= 0)
+                if (index > 0)
                 {
                     list.Add(text.Substring(0, index).Trim());
                     text = text.Substring(index);
